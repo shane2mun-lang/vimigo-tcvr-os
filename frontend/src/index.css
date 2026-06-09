@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-100 text-slate-900 font-sans antialiased;
+}
+
+/* Cleaner number inputs (no spinners). */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Thin scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+/* Range slider accent for the simulator. */
+input[type='range'] {
+  accent-color: #6366f1;
+}
+
+/* Print: clean white page for the PDF report. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  body {
+    background: #ffffff;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-white shadow-sm ring-1 ring-slate-200;
+  }
+  .field-label {
+    @apply block text-xs font-medium text-slate-500 mb-1;
+  }
+  .input-base {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm
+      outline-none transition focus:border-brand-accent focus:ring-2 focus:ring-indigo-100;
+  }
+  .menu-item {
+    @apply flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-slate-600 transition hover:bg-slate-50;
+  }
+}
