@@ -311,24 +311,19 @@ export const strings = {
   'agent.restart': { zh: '重新开始', en: 'Restart' },
   'agent.orManual': { zh: '或者直接往下滚动，自己填写每一区。', en: 'Or just scroll down and fill each section yourself.' },
 
-  // ── Classroom check-in / Notion sync ────────────────────────────────────────
-  'checkin.title': { zh: '学员签到 Student Check-in', en: 'Student Check-in 学员签到' },
+  // ── Welcome registration ─────────────────────────────────────────────────────
+  'checkin.title': { zh: '欢迎使用 TCVR Revenue OS', en: 'Welcome to TCVR Revenue OS' },
   'checkin.lead': {
-    zh: '签到后，你填写的数据会自动同步给 vimigo 团队做分析（每次修改约 1 分钟后自动备份）。',
-    en: 'After check-in, your data auto-syncs to the vimigo team for analysis (auto-backup ~1 min after each change).',
+    zh: '开始之前，请先填写你的资料，系统会为你建立专属的诊断档案。',
+    en: 'Before you start, fill in your details — the system will set up your personal diagnostic profile.',
   },
-  'checkin.name': { zh: '你的名字 Your name *', en: 'Your name 你的名字 *' },
+  'checkin.name': { zh: '你的名字 Name', en: 'Your name 名字' },
   'checkin.phone': { zh: 'WhatsApp 号码', en: 'WhatsApp number' },
-  'checkin.class': { zh: '班次（如 2026-06 班）', en: 'Class (e.g. 2026-06)' },
-  'checkin.start': { zh: '签到并开始同步', en: 'Check in & start sync' },
-  'checkin.idle': { zh: '待同步', en: 'pending' },
-  'checkin.syncing': { zh: '同步中…', en: 'syncing…' },
-  'checkin.synced': { zh: '已同步', en: 'synced' },
-  'checkin.error': { zh: '同步失败 — 点「立即同步」重试', en: 'sync failed — press Sync now to retry' },
-  'checkin.unconfigured': { zh: '同步未配置（老师端未接 Notion）', en: 'sync not configured (Notion not connected)' },
-  'checkin.syncNow': { zh: '立即同步', en: 'Sync now' },
-  'checkin.submitReport': { zh: '提交报告', en: 'Submit report' },
-  'checkin.signOut': { zh: '登出', en: 'Sign out' },
+  'checkin.company': { zh: '公司名 Company', en: 'Company 公司名' },
+  'checkin.class': { zh: '班级 Class', en: 'Class 班级' },
+  'checkin.classPlaceholder': { zh: '例如 2026-06 KL班', en: 'e.g. 2026-06 KL' },
+  'checkin.start': { zh: '开始我的诊断', en: 'Start my diagnosis' },
+  'checkin.edit': { zh: '修改资料', en: 'Edit details' },
 
   // ── Demo account ─────────────────────────────────────────────────────────────
   'demo.button': { zh: 'Demo 示范', en: 'Demo' },

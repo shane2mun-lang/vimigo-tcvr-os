@@ -1,20 +1,22 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Classroom check-in + Notion auto-sync. The student registers once (name +
-// WhatsApp + class); after that every data change auto-syncs (debounced 60s) to
-// the teacher's Notion database. "提交报告" also appends a full report snapshot.
+// Welcome registration gate. After the password, the student registers (name +
+// WhatsApp + company + class) before using the app. Data syncs quietly in the
+// background (debounced on change; report snapshot on first sync and whenever a
+// PDF is exported). Demo data is NEVER synced. No sync UI is shown.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '@/store/useStore'
 import { useInput } from '@/store/selectors'
 import { useT } from '@/i18n/useT'
-import { Button, Card, cn } from '@/components/ui'
+import { Button, Card } from '@/components/ui'
+import { DEMO_NAME } from '@/store/demo'
 
-type SyncState = 'idle' | 'syncing' | 'ok' | 'error' | 'unconfigured'
-
-async function postSubmit(snapshot: boolean): Promise<{ ok: boolean; state: SyncState }> {
+async function postSubmit(snapshot: boolean): Promise<boolean> {
   const s = useStore.getState()
-  if (!s.student) return { ok: false, state: 'idle' }
+  if (!s.student) return false
+  // Never push demo-account data into the analysis database.
+  if (s.activeProfileName === DEMO_NAME) return false
   try {
     const res = await fetch('/api/submit', {
       method: 'POST',
@@ -27,39 +29,43 @@ async function postSubmit(snapshot: boolean): Promise<{ ok: boolean; state: Sync
         input: s.getInput(),
       }),
     })
-    if (res.status === 503) return { ok: false, state: 'unconfigured' }
-    if (!res.ok) return { ok: false, state: 'error' }
+    if (!res.ok) return false
     const json = (await res.json()) as { pageId?: string }
     s.setNotionSync(json.pageId ?? s.notionPageId, s.syncCount + 1)
-    return { ok: true, state: 'ok' }
+    return true
   } catch {
-    return { ok: false, state: 'error' }
+    return false
   }
 }
 
 export function CheckInCard() {
-  const { t, lang } = useT()
+  const { t } = useT()
   const student = useStore((s) => s.student)
   const setStudent = useStore((s) => s.setStudent)
-  const syncCount = useStore((s) => s.syncCount)
+  const setProfile = useStore((s) => s.setProfile)
+  const profileName = useStore((s) => s.profile.name)
   const input = useInput()
 
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [company, setCompany] = useState(profileName ?? '')
   const [classCode, setClassCode] = useState('')
-  const [sync, setSync] = useState<SyncState>('idle')
-  const [lastSyncAt, setLastSyncAt] = useState<string | null>(null)
   const timer = useRef<number | null>(null)
+  const retry = useRef<number | null>(null)
   const firstRun = useRef(true)
 
-  const runSync = async (snapshot = false) => {
-    setSync('syncing')
-    const r = await postSubmit(snapshot)
-    setSync(r.state)
-    if (r.ok) setLastSyncAt(new Date().toTimeString().slice(0, 5))
+  const sync = async (snapshot = false) => {
+    const ok = await postSubmit(snapshot)
+    if (!ok && retry.current === null) {
+      // Quiet retry a bit later; never surface anything.
+      retry.current = window.setTimeout(() => {
+        retry.current = null
+        void postSubmit(snapshot)
+      }, 120000)
+    }
   }
 
-  // Auto-sync: any input change while checked-in schedules a sync 60s later.
+  // Background sync on data changes (debounced 60s).
   useEffect(() => {
     if (!student) return
     if (firstRun.current) {
@@ -67,88 +73,85 @@ export function CheckInCard() {
       return
     }
     if (timer.current) window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => void runSync(false), 60000)
+    timer.current = window.setTimeout(() => void sync(false), 60000)
     return () => {
       if (timer.current) window.clearTimeout(timer.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, student])
 
-  const checkIn = () => {
-    const n = name.trim()
-    if (!n) return
-    setStudent({ name: n, phone: phone.trim() || undefined, classCode: classCode.trim() || undefined })
-    void runSync(false)
+  // Whenever a PDF is exported (print dialog), capture a report snapshot too.
+  useEffect(() => {
+    if (!student) return
+    const onPrint = () => void sync(true)
+    window.addEventListener('beforeprint', onPrint)
+    return () => window.removeEventListener('beforeprint', onPrint)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [student])
+
+  const ready = name.trim() !== '' && phone.trim() !== '' && company.trim() !== ''
+
+  const start = () => {
+    if (!ready) return
+    setStudent({ name: name.trim(), phone: phone.trim(), classCode: classCode.trim() || undefined })
+    setProfile({ name: company.trim() })
+    void sync(true)
   }
 
-  // ── Not checked in: the registration strip ──────────────────────────────────
-  if (!student) {
+  // ── Registered: a small friendly greeting, nothing else ─────────────────────
+  if (student) {
     return (
-      <Card className="border-l-4 border-l-brand-accent p-4 sm:p-5">
-        <div className="mb-2 text-sm font-semibold text-slate-800">🎓 {t('checkin.title')}</div>
-        <p className="mb-3 text-xs text-slate-500">{t('checkin.lead')}</p>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('checkin.name')}
-            className="input-base sm:flex-1"
-          />
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder={t('checkin.phone')}
-            className="input-base sm:flex-1"
-          />
-          <input
-            value={classCode}
-            onChange={(e) => setClassCode(e.target.value)}
-            placeholder={t('checkin.class')}
-            className="input-base sm:w-36"
-          />
-          <Button onClick={checkIn} disabled={name.trim() === ''}>
-            {t('checkin.start')}
-          </Button>
+      <Card className="flex items-center justify-between gap-3 px-4 py-2.5">
+        <div className="text-sm text-slate-700">
+          👋 <span className="font-semibold">{student.name}</span>
+          {profileName && <span className="text-slate-400"> · {profileName}</span>}
+          {student.classCode && <span className="text-slate-400"> · {student.classCode}</span>}
         </div>
+        <button
+          type="button"
+          onClick={() => setStudent(null)}
+          title={t('checkin.edit')}
+          className="rounded-md px-2 py-1 text-xs text-slate-300 transition hover:bg-slate-100 hover:text-slate-500"
+        >
+          ✎
+        </button>
       </Card>
     )
   }
 
-  // ── Checked in: the slim sync status bar ────────────────────────────────────
-  const statusText: Record<SyncState, string> = {
-    idle: t('checkin.idle'),
-    syncing: t('checkin.syncing'),
-    ok: `${t('checkin.synced')}${lastSyncAt ? ' ' + lastSyncAt : ''} · ×${syncCount}`,
-    error: t('checkin.error'),
-    unconfigured: t('checkin.unconfigured'),
-  }
-  const dot: Record<SyncState, string> = {
-    idle: 'bg-slate-300',
-    syncing: 'bg-amber-400 animate-pulse',
-    ok: 'bg-emerald-500',
-    error: 'bg-red-500',
-    unconfigured: 'bg-slate-300',
-  }
-
+  // ── Not registered: full-screen welcome gate ────────────────────────────────
   return (
-    <Card className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-      <div className="flex items-center gap-2 text-sm">
-        <span className={cn('h-2 w-2 rounded-full', dot[sync])} />
-        <span className="font-semibold text-slate-800">☁ {student.name}</span>
-        {student.classCode && <span className="text-xs text-slate-400">{student.classCode}</span>}
-        <span className="text-xs text-slate-500">{statusText[sync]}</span>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <Button size="sm" variant="outline" onClick={() => void runSync(false)} disabled={sync === 'syncing'}>
-          ↻ {t('checkin.syncNow')}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+      <Card className="w-full max-w-md p-6 sm:p-8">
+        <div className="mb-1 flex items-center gap-2 text-lg font-bold text-slate-900">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-accent text-base font-bold text-white">V</span>
+          {t('checkin.title')}
+        </div>
+        <p className="mb-5 text-sm leading-relaxed text-slate-500">{t('checkin.lead')}</p>
+
+        <div className="space-y-3">
+          <label className="block">
+            <span className="field-label">{t('checkin.name')} *</span>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="input-base" autoFocus />
+          </label>
+          <label className="block">
+            <span className="field-label">{t('checkin.phone')} *</span>
+            <input value={phone} onChange={(e) => setPhone(e.target.value)} className="input-base" placeholder="+60…" inputMode="tel" />
+          </label>
+          <label className="block">
+            <span className="field-label">{t('checkin.company')} *</span>
+            <input value={company} onChange={(e) => setCompany(e.target.value)} className="input-base" />
+          </label>
+          <label className="block">
+            <span className="field-label">{t('checkin.class')}</span>
+            <input value={classCode} onChange={(e) => setClassCode(e.target.value)} className="input-base" placeholder={t('checkin.classPlaceholder')} />
+          </label>
+        </div>
+
+        <Button onClick={start} disabled={!ready} className="mt-5 w-full">
+          {t('checkin.start')} →
         </Button>
-        <Button size="sm" onClick={() => void runSync(true)} disabled={sync === 'syncing'}>
-          📤 {t('checkin.submitReport')}
-        </Button>
-        <Button size="sm" variant="ghost" onClick={() => setStudent(null)} title={t('checkin.signOut')}>
-          ✕
-        </Button>
-      </div>
-    </Card>
+      </Card>
+    </div>
   )
 }
