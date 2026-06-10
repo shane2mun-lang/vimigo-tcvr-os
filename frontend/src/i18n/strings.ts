@@ -311,6 +311,18 @@ export const strings = {
   'agent.restart': { zh: '重新开始', en: 'Restart' },
   'agent.orManual': { zh: '或者直接往下滚动，自己填写每一区。', en: 'Or just scroll down and fill each section yourself.' },
 
+  // ── Demo account ─────────────────────────────────────────────────────────────
+  'demo.button': { zh: 'Demo 示范', en: 'Demo' },
+  'demo.confirm': {
+    zh: '载入示范账号「SH 电器连锁」？画面会换成完整的示范数据；你目前的数据已自动备份到右上角档案选单，随时可以载回。',
+    en: 'Load the demo account "SH Electrical Chain"? The screen will switch to full demo data; your current data has been auto-backed-up to the profile menu (top right) and can be restored anytime.',
+  },
+  'demo.backupName': { zh: '我的数据（自动备份）', en: 'My data (auto-backup)' },
+  'demo.loaded': {
+    zh: '✓ 示范账号已载入 — 往下滚动看每一区怎么填、仪表板怎么读。',
+    en: '✓ Demo loaded — scroll down to see how every section is filled and how to read the dashboards.',
+  },
+
   // ── Full report ──────────────────────────────────────────────────────────────
   'report.fullTitle': { zh: 'TCVR 完整诊断报告', en: 'Full TCVR Diagnostic Report' },
   'report.overview': { zh: '一页总览', en: 'Executive Overview' },
