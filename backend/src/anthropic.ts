@@ -53,6 +53,42 @@ export async function callClaude(params: CallClaudeParams): Promise<CallClaudeRe
   return { text, model: response.model };
 }
 
+export interface ChatTurn {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface CallClaudeChatParams {
+  tier: Tier;
+  system: string;
+  messages: ChatTurn[];
+  maxTokens?: number;
+}
+
+/**
+ * Multi-turn variant of callClaude — passes a full conversation history. Used by
+ * the interview agent. Throws on SDK errors so callers can map them to a 502.
+ */
+export async function callClaudeChat(params: CallClaudeChatParams): Promise<CallClaudeResult> {
+  const { tier, system, messages, maxTokens = 2048 } = params;
+  const model = modelForTier(tier);
+
+  const response = await getClient().messages.create({
+    model,
+    max_tokens: maxTokens,
+    system,
+    messages,
+  });
+
+  const text = response.content
+    .filter((block): block is Anthropic.TextBlock => block.type === 'text')
+    .map((block) => block.text)
+    .join('')
+    .trim();
+
+  return { text, model: response.model };
+}
+
 /**
  * Strips ```json (or bare ```) fences from a model response and parses the JSON.
  * Also tolerates leading/trailing prose by extracting the outermost {...} or [...]

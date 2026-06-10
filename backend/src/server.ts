@@ -9,6 +9,7 @@ import categorizeRouter from './routes/categorize';
 import painpointsRouter from './routes/painpoints';
 import explainRouter from './routes/explain';
 import vimigoalRouter from './routes/vimigoal';
+import interviewRouter from './routes/interview';
 import { passwordGate } from './gate';
 
 const app = express();
@@ -35,6 +36,7 @@ app.use('/api/ai/categorize', categorizeRouter);
 app.use('/api/ai/painpoints', painpointsRouter);
 app.use('/api/ai/explain', explainRouter);
 app.use('/api/ai/vimigoal', vimigoalRouter);
+app.use('/api/ai/interview', interviewRouter);
 
 // In production, serve the built frontend and SPA-fallback to index.html for any
 // non-/api route. The repo layout is <root>/frontend/dist and <root>/backend/src,

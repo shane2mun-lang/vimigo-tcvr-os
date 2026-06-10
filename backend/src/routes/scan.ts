@@ -7,6 +7,12 @@ import { buildScanPrompt } from '../prompts';
 
 const router = Router();
 
+interface ScanSuggestion {
+  pillar: 'traffic' | 'conversion' | 'value' | 'recurring';
+  finding: string;
+  suggestion: string;
+}
+
 interface ScanModelResult {
   positioning: string;
   products: string[];
@@ -14,6 +20,26 @@ interface ScanModelResult {
   painPointsAddressed: string[];
   toneNotes: string;
   warnings: string[];
+  tcvrSuggestions: ScanSuggestion[];
+}
+
+const PILLARS = new Set(['traffic', 'conversion', 'value', 'recurring']);
+
+function coerceSuggestions(raw: unknown): ScanSuggestion[] {
+  if (!Array.isArray(raw)) return [];
+  const out: ScanSuggestion[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue;
+    const s = item as Record<string, unknown>;
+    if (typeof s.pillar === 'string' && PILLARS.has(s.pillar)) {
+      out.push({
+        pillar: s.pillar as ScanSuggestion['pillar'],
+        finding: typeof s.finding === 'string' ? s.finding : '',
+        suggestion: typeof s.suggestion === 'string' ? s.suggestion : '',
+      });
+    }
+  }
+  return out;
 }
 
 const FETCH_FAIL_MESSAGE: Record<FetchFailReason, string> = {
@@ -74,6 +100,7 @@ router.post(
       painPointsAddressed: Array.isArray(data.painPointsAddressed) ? data.painPointsAddressed : [],
       toneNotes: data.toneNotes ?? '',
       warnings: Array.isArray(data.warnings) ? data.warnings : [],
+      tcvrSuggestions: coerceSuggestions(data.tcvrSuggestions),
     });
   }),
 );

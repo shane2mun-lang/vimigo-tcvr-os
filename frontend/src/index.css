@@ -45,13 +45,17 @@ input[type='range'] {
   accent-color: #6366f1;
 }
 
-/* Print: clean white page for the PDF report. */
+/* Print: clean white page for the PDF report; keep brand/health colors. */
 @media print {
   @page {
-    margin: 14mm;
+    margin: 12mm;
   }
   body {
     background: #ffffff;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 

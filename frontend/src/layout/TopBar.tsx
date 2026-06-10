@@ -1,7 +1,8 @@
 import { useStore } from '@/store/useStore'
 import { useT } from '@/i18n/useT'
-import { Segmented } from '@/components/ui'
+import { Button, Segmented } from '@/components/ui'
 import { ProfileManager } from './ProfileManager'
+import { exportTcvrReport } from '@/pdf/exportReport'
 import type { Lang } from '@/i18n/strings'
 
 export function TopBar() {
@@ -20,10 +21,13 @@ export function TopBar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="hidden items-center gap-1 text-xs text-emerald-600 sm:inline-flex">
+        <span className="hidden items-center gap-1 text-xs text-emerald-600 md:inline-flex">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           {t('common.saved')}
         </span>
+        <Button variant="outline" size="sm" onClick={exportTcvrReport} className="hidden sm:inline-flex">
+          ⤓ {t('profile.exportPdf')}
+        </Button>
         <Segmented<Lang>
           value={lang}
           onChange={setLang}

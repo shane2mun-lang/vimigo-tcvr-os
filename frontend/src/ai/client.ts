@@ -4,6 +4,12 @@
 import type { ProductTag, TCVRPillar } from '@/engine/types'
 import type { Lang } from '@/i18n/strings'
 
+export interface ScanSuggestion {
+  pillar: TCVRPillar
+  finding: string
+  suggestion: string
+}
+
 export interface ScanResult {
   model: string
   source: 'fetched' | 'pasted'
@@ -13,6 +19,29 @@ export interface ScanResult {
   painPointsAddressed: string[]
   toneNotes: string
   warnings: string[]
+  tcvrSuggestions: ScanSuggestion[]
+}
+
+export interface ChatTurn {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+/** Loosely-typed payload the interview agent emits when done — mapped defensively. */
+export interface InterviewData {
+  profile?: Record<string, unknown>
+  channels?: Record<string, unknown>[]
+  funnel?: Record<string, unknown>
+  products?: Record<string, unknown>[]
+  recurring?: Record<string, unknown>
+  costs?: Record<string, unknown>
+}
+
+export interface InterviewTurnResult {
+  model: string
+  reply: string
+  done: boolean
+  data: InterviewData | null
 }
 export interface CategorizeResult {
   model: string
@@ -77,4 +106,6 @@ export const ai = {
     callAI<ExplainResult>('explain', { lang, metrics, scenario, tone: 'boss-friendly' }),
   vimigoal: (lang: Lang, topLevers: { lever: string; expectedGpImpact: number }[], metrics: Record<string, number>, horizonDays = 90) =>
     callAI<VimiGoalResult>('vimigoal', { lang, topLevers, metrics, horizonDays }),
+  interview: (lang: Lang, messages: ChatTurn[]) =>
+    callAI<InterviewTurnResult>('interview', { lang, messages }),
 }

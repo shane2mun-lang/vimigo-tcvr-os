@@ -161,34 +161,65 @@ export function CompanyModule() {
   )
 }
 
+const PILLAR_TAG_COLOR: Record<string, 'blue' | 'violet' | 'amber' | 'emerald'> = {
+  traffic: 'blue',
+  conversion: 'violet',
+  value: 'amber',
+  recurring: 'emerald',
+}
+
 function ScanSummary({ data }: { data: ScanResult }) {
   const { t, d } = useT()
+  const suggestions = data.tcvrSuggestions ?? []
   return (
-    <div className="space-y-3 text-sm text-slate-700">
-      <Field label={t('company.industry')} value={data.positioning} />
-      {data.products.length > 0 && (
+    <div className="space-y-4 text-sm text-slate-700">
+      {/* THE point of the scan: actionable TCVR improvement suggestions, first. */}
+      {suggestions.length > 0 && (
         <div>
-          <div className="field-label">{t('value.product')}</div>
-          <div className="flex flex-wrap gap-1.5">
-            {data.products.map((p, i) => (
-              <Tag key={i} color="violet">
-                {p}
-              </Tag>
+          <div className="mb-2 text-sm font-semibold text-brand-accent">💡 {t('ai.scanSuggestions')}</div>
+          <div className="space-y-2">
+            {suggestions.map((s, i) => (
+              <div key={i} className="rounded-xl bg-white px-3.5 py-2.5 ring-1 ring-indigo-100">
+                <div className="mb-1 flex items-center gap-2">
+                  <Tag color={PILLAR_TAG_COLOR[s.pillar] ?? 'slate'}>{d('pillar', s.pillar)}</Tag>
+                  <span className="text-xs text-slate-400">{s.finding}</span>
+                </div>
+                <div className="font-medium text-slate-800">→ {s.suggestion}</div>
+              </div>
             ))}
           </div>
         </div>
       )}
-      <Field label={t('reward.kpi')} value={data.cta} />
-      {data.painPointsAddressed.length > 0 && (
-        <div>
-          <div className="field-label">{d('pillar', 'conversion')}</div>
-          <ul className="list-disc space-y-0.5 pl-5 text-slate-600">
-            {data.painPointsAddressed.map((p, i) => (
-              <li key={i}>{p}</li>
-            ))}
-          </ul>
+
+      {/* Supporting findings */}
+      <details className="rounded-lg bg-white/60 px-3 py-2 ring-1 ring-slate-100" open={suggestions.length === 0}>
+        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-slate-400">
+          {t('ai.scanFindings')}
+        </summary>
+        <div className="mt-2 space-y-3">
+          <Field label={t('company.industry')} value={data.positioning} />
+          {data.products.length > 0 && (
+            <div>
+              <div className="field-label">{t('value.product')}</div>
+              <div className="flex flex-wrap gap-1.5">
+                {data.products.map((p, i) => (
+                  <Tag key={i} color="violet">
+                    {p}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+          )}
+          <Field label={t('reward.kpi')} value={data.cta} />
+          {data.painPointsAddressed.length > 0 && (
+            <ul className="list-disc space-y-0.5 pl-5 text-slate-600">
+              {data.painPointsAddressed.map((p, i) => (
+                <li key={i}>{p}</li>
+              ))}
+            </ul>
+          )}
         </div>
-      )}
+      </details>
     </div>
   )
 }

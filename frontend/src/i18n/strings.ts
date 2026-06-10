@@ -287,6 +287,43 @@ export const strings = {
   },
   'ai.categorize': { zh: 'AI 自动分类产品', en: 'AI categorize products' },
   'ai.explain': { zh: 'AI 解释这个预测', en: 'AI explain this forecast' },
+  'ai.scanSuggestions': { zh: 'TCVR 改进建议', en: 'TCVR improvement suggestions' },
+  'ai.scanFindings': { zh: '网站分析发现', en: 'Scan findings' },
+
+  // ── AI interview agent ───────────────────────────────────────────────────────
+  'agent.heroTitle': { zh: '让 AI 助手帮你完成所有资料', en: 'Let the AI assistant fill everything in for you' },
+  'agent.heroLead': {
+    zh: '不用一格一格学着填 — AI 顾问用问答方式收集你的生意数据，跟你确认后自动填入整个系统，之后你随时微调。',
+    en: 'No form-filling needed — the AI consultant interviews you, confirms the numbers, fills the whole system in, then you fine-tune anything.',
+  },
+  'agent.start': { zh: '开始 AI 问答', en: 'Start AI interview' },
+  'agent.title': { zh: 'AI 资料助手', en: 'AI Data Assistant' },
+  'agent.placeholder': { zh: '输入你的回答…（可以说"跳过"）', en: 'Type your answer… (you can say "skip")' },
+  'agent.send': { zh: '发送', en: 'Send' },
+  'agent.thinking': { zh: 'AI 思考中…', en: 'Thinking…' },
+  'agent.confirmTitle': { zh: '✓ 资料收集完成 — 请确认', en: '✓ Data collected — please confirm' },
+  'agent.apply': { zh: '确认，帮我填入系统', en: 'Confirm & fill the system' },
+  'agent.keepEditing': { zh: '继续修改', en: 'Keep adjusting' },
+  'agent.applied': {
+    zh: '✓ 已全部填入！往下滚动检查每一区，任何数字都可以直接微调。',
+    en: '✓ All filled in! Scroll down to review each section — fine-tune any number directly.',
+  },
+  'agent.restart': { zh: '重新开始', en: 'Restart' },
+  'agent.orManual': { zh: '或者直接往下滚动，自己填写每一区。', en: 'Or just scroll down and fill each section yourself.' },
+
+  // ── Full report ──────────────────────────────────────────────────────────────
+  'report.fullTitle': { zh: 'TCVR 完整诊断报告', en: 'Full TCVR Diagnostic Report' },
+  'report.overview': { zh: '一页总览', en: 'Executive Overview' },
+  'report.detail': { zh: '详细分析', en: 'Detailed Analysis' },
+  'report.channelTable': { zh: '渠道明细', en: 'Channel detail' },
+  'report.funnelDetail': { zh: '销售漏斗明细', en: 'Sales funnel detail' },
+  'report.productDetail': { zh: '产品组合明细', en: 'Product portfolio detail' },
+  'report.retentionDetail': { zh: '复购 & 转介绍明细', en: 'Recurring & referral detail' },
+  'report.scenarioDetail': { zh: '情景模拟对比', en: 'Scenario comparison' },
+  'report.discussNote': {
+    zh: '本报告供与 vimigo CSM 团队或内部团队讨论使用。',
+    en: 'Prepared for discussion with your vimigo CSM team or internal team.',
+  },
 
   // ── Empty states ─────────────────────────────────────────────────────────────
   'empty.fillTraffic': { zh: '填写流量数据以查看此项', en: 'Fill in Traffic to see this' },

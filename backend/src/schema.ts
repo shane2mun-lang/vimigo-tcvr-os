@@ -67,3 +67,15 @@ export const vimigoalRequestSchema = z.object({
   lang: langSchema,
 });
 export type VimigoalRequest = z.infer<typeof vimigoalRequestSchema>;
+
+// ── 6. interview ─────────────────────────────────────────────────────────────
+const chatTurnSchema = z.object({
+  role: z.enum(['user', 'assistant']),
+  content: z.string().min(1).max(4000),
+});
+
+export const interviewRequestSchema = z.object({
+  messages: z.array(chatTurnSchema).min(1).max(60),
+  lang: langSchema,
+});
+export type InterviewRequest = z.infer<typeof interviewRequestSchema>;
