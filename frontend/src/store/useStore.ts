@@ -21,6 +21,12 @@ import type {
 import type { Lang } from '@/i18n/strings'
 import { emptyInput, sampleInput } from './sample'
 
+export interface StudentInfo {
+  name: string
+  phone?: string
+  classCode?: string
+}
+
 export type AIFeature = 'scan' | 'categorize' | 'painpoints' | 'explain' | 'vimigoal'
 export type AIStatus = 'idle' | 'loading' | 'ok' | 'unavailable' | 'error'
 export interface AIState {
@@ -54,6 +60,10 @@ export interface StoreState extends TCVRInput {
   activeProfileName?: string
   savedAt?: number
   ai: Record<AIFeature, AIState>
+  /** Classroom check-in: who is filling this browser's data (synced to Notion). */
+  student: StudentInfo | null
+  notionPageId: string | null
+  syncCount: number
 
   setLang: (l: Lang) => void
   setProfile: (patch: Partial<CompanyProfile>) => void
@@ -69,6 +79,8 @@ export interface StoreState extends TCVRInput {
   setLevers: (patch: Partial<LeverDeltas>) => void
   resetLevers: () => void
   setAI: (f: AIFeature, s: AIState) => void
+  setStudent: (s: StudentInfo | null) => void
+  setNotionSync: (pageId: string | null, syncCount: number) => void
   loadInput: (input: TCVRInput, name?: string) => void
   clearAll: () => void
   loadSample: () => void
@@ -83,6 +95,9 @@ export const useStore = create<StoreState>()(
       levers: { ...ZERO_LEVERS },
       activeProfileName: sampleInput.profile.name,
       ai: freshAI(),
+      student: null,
+      notionPageId: null,
+      syncCount: 0,
 
       setLang: (lang) => set({ lang }),
 
@@ -110,6 +125,9 @@ export const useStore = create<StoreState>()(
       resetLevers: () => set({ levers: { ...ZERO_LEVERS } }),
 
       setAI: (f, st) => set((s) => ({ ai: { ...s.ai, [f]: st } })),
+
+      setStudent: (student) => set({ student, ...(student === null ? { notionPageId: null, syncCount: 0 } : {}) }),
+      setNotionSync: (notionPageId, syncCount) => set({ notionPageId, syncCount }),
 
       loadInput: (input, name) =>
         set({
@@ -149,6 +167,9 @@ export const useStore = create<StoreState>()(
         lang: s.lang,
         levers: s.levers,
         activeProfileName: s.activeProfileName,
+        student: s.student,
+        notionPageId: s.notionPageId,
+        syncCount: s.syncCount,
       }),
     },
   ),

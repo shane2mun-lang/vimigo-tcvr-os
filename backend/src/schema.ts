@@ -79,3 +79,17 @@ export const interviewRequestSchema = z.object({
   lang: langSchema,
 });
 export type InterviewRequest = z.infer<typeof interviewRequestSchema>;
+
+// ── 7. submit (Notion sync) ──────────────────────────────────────────────────
+export const submitRequestSchema = z.object({
+  student: z.object({
+    name: z.string().min(1).max(120),
+    phone: z.string().max(40).optional(),
+    classCode: z.string().max(90).optional(),
+  }),
+  pageId: z.string().max(60).nullable().optional(),
+  snapshot: z.boolean().optional(),
+  syncs: z.number().int().min(0).max(100000).optional(),
+  input: z.record(z.string(), z.unknown()),
+});
+export type SubmitRequest = z.infer<typeof submitRequestSchema>;

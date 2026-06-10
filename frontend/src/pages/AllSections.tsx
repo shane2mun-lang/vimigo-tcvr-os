@@ -3,6 +3,7 @@
 
 import type { ReactNode } from 'react'
 import { useT } from '@/i18n/useT'
+import { CheckInCard } from '@/components/CheckInCard'
 import { InterviewAgent } from '@/modules/InterviewAgent'
 import { CompanyModule } from '@/modules/CompanyModule'
 import { TrafficModule } from '@/modules/TrafficModule'
@@ -39,7 +40,10 @@ export function AllSections() {
   const { t } = useT()
   return (
     <div className="space-y-10">
-      <InterviewAgent />
+      <div className="space-y-4">
+        <CheckInCard />
+        <InterviewAgent />
+      </div>
 
       <GroupDivider label={t('nav.inputs')} />
       <Section id="company"><CompanyModule /></Section>
