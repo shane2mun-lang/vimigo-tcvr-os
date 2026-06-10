@@ -40,8 +40,9 @@ export function HelpTip({
       <span
         className={cn(
           pos,
-          'pointer-events-none invisible rounded-xl bg-slate-800 px-3.5 py-3 text-left opacity-0 shadow-xl transition-opacity duration-150',
-          'group-hover/help:visible group-hover/help:opacity-100 group-focus/help:visible group-focus/help:opacity-100',
+          // display:none when closed so hidden bubbles never widen the page (mobile).
+          'pointer-events-none hidden rounded-xl bg-slate-800 px-3.5 py-3 text-left shadow-xl',
+          'group-hover/help:block group-focus/help:block',
         )}
       >
         <span className="block text-xs font-medium leading-relaxed text-white">{entry.what[lang]}</span>

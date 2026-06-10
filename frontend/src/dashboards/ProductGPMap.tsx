@@ -57,7 +57,7 @@ export function ProductGPMap() {
                   <th className="py-2 pr-3">{t('value.type')}</th>
                   <th className="py-2 pr-3 text-right">{t('kpi.gp')}</th>
                   <th className="py-2 pr-3 text-right">{t('value.margin')}</th>
-                  <th className="py-2 pr-3 text-right">Mix %</th>
+                  <th className="py-2 pr-3 text-right">{t('productgp.mix')}</th>
                   <th className="py-2 pl-3 text-right">{t('nav.reward')}</th>
                 </tr>
               </thead>
@@ -73,7 +73,7 @@ export function ProductGPMap() {
                     <td className="py-2 pr-3 text-right tabular-nums text-slate-600">{formatPct(p.mixContributionPct)}</td>
                     <td className="py-2 pl-3 text-right">
                       {p.rewardPriority ? (
-                        <Tag color="amber">★ Challenge</Tag>
+                        <Tag color="amber">{t('productgp.challenge')}</Tag>
                       ) : (
                         <span className="text-slate-300">—</span>
                       )}
@@ -83,7 +83,7 @@ export function ProductGPMap() {
               </tbody>
             </table>
             <p className="mt-3 text-xs text-slate-400">
-              ★ Challenge — {formatNumber(rows.filter((p) => p.rewardPriority).length, lang)} ·{' '}
+              {t('productgp.challenge')} — {formatNumber(rows.filter((p) => p.rewardPriority).length, lang)} ·{' '}
               {lang === 'zh' ? '高 GP、低销量产品适合做 Sales Challenge' : 'High-GP, low-volume products suit a Sales Challenge'}
             </p>
           </div>

@@ -235,6 +235,8 @@ export const strings = {
   'productgp.heading': { zh: '产品漏斗 & GP 地图', en: 'Product Funnel & GP Map' },
   'productgp.ladder': { zh: '产品阶梯', en: 'Product ladder' },
   'productgp.missing': { zh: '缺少', en: 'Missing' },
+  'productgp.mix': { zh: '占比 Mix', en: 'Mix %' },
+  'productgp.challenge': { zh: '★ 销售挑战', en: '★ Challenge' },
   'simulator.heading': { zh: '情景模拟器', en: 'Scenario Simulator' },
   'simulator.lead': {
     zh: '拉动滑杆，马上看到 Sales、GP 与奖励预算的变化 — 哪个动作 ROI 最大?',

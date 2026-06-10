@@ -34,22 +34,22 @@ export function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-slate-200 bg-white/90 px-4 py-2.5 backdrop-blur">
-      <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-accent text-sm font-bold text-white">V</div>
-        <div className="leading-tight">
-          <div className="text-sm font-semibold text-slate-900">{t('app.title')}</div>
+    <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-slate-200 bg-white/90 px-3 py-2.5 backdrop-blur sm:gap-4 sm:px-4">
+      <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-accent text-sm font-bold text-white">V</div>
+        <div className="min-w-0 leading-tight">
+          <div className="truncate text-sm font-semibold text-slate-900">{t('app.title')}</div>
           <div className="hidden text-[11px] text-slate-400 sm:block">{t('app.subtitle')}</div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         <span className="hidden items-center gap-1 text-xs text-emerald-600 md:inline-flex">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           {t('common.saved')}
         </span>
-        <Button size="sm" onClick={loadDemo} className="bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600">
-          🎬 {t('demo.button')}
+        <Button size="sm" onClick={loadDemo} className="bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600" title={t('demo.button')}>
+          🎬 <span className="hidden sm:inline">{t('demo.button')}</span>
         </Button>
         <Button variant="outline" size="sm" onClick={exportTcvrReport} className="hidden sm:inline-flex">
           ⤓ {t('profile.exportPdf')}

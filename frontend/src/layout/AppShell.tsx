@@ -12,7 +12,7 @@ export function AppShell() {
         <div className="flex min-h-0 flex-1">
           <SideNav />
           {/* The single continuous-scroll surface; sidebar items anchor-scroll into it. */}
-          <main id="main-scroll" className="min-w-0 flex-1 overflow-y-auto scroll-smooth">
+          <main id="main-scroll" className="min-w-0 flex-1 overflow-y-auto overflow-x-hidden scroll-smooth">
             <MobileNav />
             <div className="mx-auto max-w-6xl px-4 py-6">
               <AllSections />
