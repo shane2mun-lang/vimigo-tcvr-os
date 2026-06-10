@@ -50,9 +50,19 @@ export function CompanyModule() {
     if (pasteMode) {
       if (content) void scan.run(undefined, content) // no-op if nothing pasted yet
     } else {
-      void scan.run(profile.website)
+      // Normalize what the boss typed ("vimigo.com" → "https://vimigo.com").
+      const raw = (profile.website ?? '').trim()
+      const url = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`
+      void scan.run(url)
     }
   }
+
+  // "Please paste your content" is a normal recoverable state — never present it as
+  // an AI failure. Only real failures (no key / server error) show the banner.
+  const displayStatus =
+    needsPaste && (scan.state.status === 'error' || scan.state.status === 'unavailable')
+      ? 'idle'
+      : scan.state.status
 
   return (
     <div className="space-y-6">
@@ -132,10 +142,10 @@ export function CompanyModule() {
       <Card className="p-5 sm:p-6">
         <AIPanel
           title={t('company.aiScan')}
-          status={scan.state.status}
+          status={displayStatus}
           onRun={runScan}
           runLabel={t('company.aiScan')}
-          error={scan.state.error}
+          error={needsPaste ? undefined : scan.state.error}
           fallback={t('company.lead')}
           extraControls={
             pasteMode ? (
