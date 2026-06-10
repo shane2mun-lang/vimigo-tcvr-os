@@ -110,11 +110,14 @@ export function ScenarioSimulator() {
         <div className="grid gap-8 lg:grid-cols-2">
           {/* ── Levers ───────────────────────────────────────────────── */}
           <div className="space-y-5">
+            {/* Slider ceilings are deliberate teaching points: traffic/repeat/referral
+                scale with money & systems (×3); conversion/ABV have skill ceilings (×2);
+                GP margin moves in hard-won points. */}
             <LabeledSlider
               label={d('pillar', 'traffic')}
               value={trafficPct}
               min={0}
-              max={50}
+              max={200}
               step={5}
               accent={PILLAR_ACCENT.traffic}
               onChange={(v) => setLevers({ trafficPct: v })}
@@ -124,7 +127,7 @@ export function ScenarioSimulator() {
               label={d('pillar', 'conversion')}
               value={conversionPct}
               min={0}
-              max={50}
+              max={100}
               step={5}
               accent={PILLAR_ACCENT.conversion}
               onChange={(v) => setLevers({ conversionPct: v })}
@@ -134,7 +137,7 @@ export function ScenarioSimulator() {
               label={t('kpi.abv')}
               value={abvPct}
               min={0}
-              max={50}
+              max={100}
               step={5}
               accent={PILLAR_ACCENT.value}
               onChange={(v) => setLevers({ abvPct: v })}
@@ -144,7 +147,7 @@ export function ScenarioSimulator() {
               label={t('kpi.gpMargin')}
               value={gpMarginPct}
               min={0}
-              max={15}
+              max={20}
               step={1}
               accent={PILLAR_ACCENT.value}
               display={`${Math.round(revenue.gpMargin * 100)}% → ${Math.round(revenue.gpMargin * 100) + gpMarginPct}%  (+${gpMarginPct} pts)`}
@@ -155,7 +158,7 @@ export function ScenarioSimulator() {
               label={t('kpi.repeatRate')}
               value={repeatPct}
               min={0}
-              max={50}
+              max={200}
               step={5}
               accent={PILLAR_ACCENT.recurring}
               onChange={(v) => setLevers({ repeatPct: v })}
@@ -165,7 +168,7 @@ export function ScenarioSimulator() {
               label={t('kpi.referralRate')}
               value={referralPct}
               min={0}
-              max={50}
+              max={200}
               step={5}
               accent={PILLAR_ACCENT.recurring}
               onChange={(v) => setLevers({ referralPct: v })}
