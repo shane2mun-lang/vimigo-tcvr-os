@@ -84,6 +84,14 @@ export const strings = {
   'company.gpMargin': { zh: '目前平均 GP Margin', en: 'Current avg GP margin' },
   'company.bottleneck': { zh: '目前最大销售瓶颈', en: 'Biggest sales bottleneck' },
   'company.aiScan': { zh: 'AI 扫描网站', en: 'AI scan website' },
+  'company.scanHint': {
+    zh: '输入上方的网站，或在此贴上你的内容让 AI 分析。',
+    en: 'Enter your website above, or paste your content here for AI to analyze.',
+  },
+  'company.scanPastePlaceholder': {
+    zh: '在此贴上你的网站 / 社媒内容…',
+    en: 'Paste your website / social content here…',
+  },
 
   // ── Traffic module ───────────────────────────────────────────────────────────
   'traffic.heading': { zh: '流量计算器', en: 'Traffic Calculator' },

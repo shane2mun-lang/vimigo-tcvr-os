@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { Bottleneck, CustomerType, SalesModel } from '@/engine/types'
 import { useStore } from '@/store/useStore'
 import { useT } from '@/i18n/useT'
-import { Card, SectionHeader, Button, Tag } from '@/components/ui'
+import { Card, SectionHeader, Tag } from '@/components/ui'
 import { NumberField, TextField, SelectField } from '@/components/fields'
 import { AIPanel } from '@/components/AIPanel'
 import { useScan } from '@/ai/useAI'
@@ -39,6 +39,20 @@ export function CompanyModule() {
       ? (scan.state.data as { needsPaste?: boolean })
       : undefined
   const needsPaste = Boolean(degraded?.needsPaste)
+
+  // No website to fetch? Drop straight into paste-mode instead of firing an invalid
+  // request (the backend needs a non-empty url OR pasted content).
+  const hasWebsite = Boolean(profile.website && profile.website.trim())
+  const pasteMode = needsPaste || !hasWebsite
+
+  const runScan = () => {
+    const content = pasted.trim()
+    if (pasteMode) {
+      if (content) void scan.run(undefined, content) // no-op if nothing pasted yet
+    } else {
+      void scan.run(profile.website)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -119,22 +133,22 @@ export function CompanyModule() {
         <AIPanel
           title={t('company.aiScan')}
           status={scan.state.status}
-          onRun={() => void scan.run(needsPaste ? undefined : profile.website, needsPaste ? pasted : undefined)}
+          onRun={runScan}
           runLabel={t('company.aiScan')}
           error={scan.state.error}
           fallback={t('company.lead')}
           extraControls={
-            needsPaste ? (
+            pasteMode ? (
               <div className="mb-3 space-y-2">
                 <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 ring-1 ring-amber-200">
-                  {t('ai.needPaste')}
+                  {needsPaste ? t('ai.needPaste') : t('company.scanHint')}
                 </div>
                 <textarea
                   value={pasted}
                   onChange={(e) => setPasted(e.target.value)}
                   rows={4}
                   className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand-accent focus:ring-2 focus:ring-indigo-100"
-                  placeholder={t('company.website')}
+                  placeholder={t('company.scanPastePlaceholder')}
                 />
               </div>
             ) : undefined
