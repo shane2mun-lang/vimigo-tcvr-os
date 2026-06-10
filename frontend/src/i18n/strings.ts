@@ -21,12 +21,12 @@ export const strings = {
   'nav.inputs': { zh: '输入资料', en: 'Inputs' },
   'nav.dashboards': { zh: '诊断仪表板', en: 'Dashboards' },
   'nav.company': { zh: '商业资料', en: 'Company Profile' },
-  'nav.traffic': { zh: '流量 Traffic', en: 'Traffic' },
-  'nav.conversion': { zh: '转化 Conversion', en: 'Conversion' },
-  'nav.value': { zh: '价值 Value', en: 'Value' },
-  'nav.recurring': { zh: '复购转介 Recurring', en: 'Recurring & Referral' },
-  'nav.costs': { zh: '成本 Costs', en: 'Costs' },
-  'nav.reward': { zh: '奖励连接 Reward', en: 'Reward & Accountability' },
+  'nav.traffic': { zh: '流量', en: 'Traffic' },
+  'nav.conversion': { zh: '转化', en: 'Conversion' },
+  'nav.value': { zh: '价值', en: 'Value' },
+  'nav.recurring': { zh: '复购转介', en: 'Recurring & Referral' },
+  'nav.costs': { zh: '成本', en: 'Costs' },
+  'nav.reward': { zh: '奖励连接', en: 'Reward & Accountability' },
   'nav.xray': { zh: 'Revenue X-Ray', en: 'Revenue X-Ray' },
   'nav.funnelmap': { zh: 'TCVR 漏斗地图', en: 'TCVR Funnel Map' },
   'nav.productgp': { zh: '产品 & GP 地图', en: 'Product & GP Map' },
@@ -336,6 +336,49 @@ export const strings = {
 } satisfies Record<string, Entry>
 
 export type StringKey = keyof typeof strings
+
+/**
+ * IMPORTANT labels rendered bilingually ("中文 · English") everywhere, regardless
+ * of the language toggle — so mixed-language teams can read every key number.
+ * Long prose (leads, descriptions, AI output) stays single-language.
+ */
+export const BI_KEYS: ReadonlySet<StringKey> = new Set<StringKey>([
+  // Navigation
+  'nav.inputs', 'nav.dashboards', 'nav.company', 'nav.traffic', 'nav.conversion',
+  'nav.value', 'nav.recurring', 'nav.costs', 'nav.reward', 'nav.funnelmap',
+  'nav.productgp', 'nav.simulator', 'nav.actionplan',
+  // KPIs
+  'kpi.currentSales', 'kpi.targetSales', 'kpi.salesGap', 'kpi.gp', 'kpi.gpMargin',
+  'kpi.cac', 'kpi.paidCac', 'kpi.abv', 'kpi.ltv', 'kpi.convRate', 'kpi.repeatRate',
+  'kpi.referralRate', 'kpi.netProfit',
+  // Section headings
+  'company.heading', 'traffic.heading', 'conversion.heading', 'value.heading',
+  'recurring.heading', 'costs.heading', 'reward.heading', 'funnelmap.heading',
+  'funnelmap.center', 'productgp.heading', 'productgp.ladder', 'productgp.missing',
+  'simulator.heading', 'actionplan.heading', 'xray.healthHeading',
+  // Traffic metrics
+  'traffic.paidEfficiency', 'traffic.organicChannels', 'traffic.bestChannel',
+  'traffic.worstChannel', 'traffic.blendedCac', 'traffic.gapToTarget',
+  'traffic.paidCpl', 'traffic.paidRoas', 'traffic.paidGpRoas', 'traffic.paidCac',
+  'traffic.contribution', 'traffic.customers',
+  // Conversion metrics
+  'conversion.overall', 'conversion.biggestDrop', 'conversion.lostValue',
+  'conversion.followupLeak',
+  // Recurring metrics
+  'recurring.repeatRate', 'recurring.referralRate',
+  // Simulator
+  'simulator.forecastSales', 'simulator.forecastGp', 'simulator.rewardBudget',
+  'simulator.requiredLeads', 'simulator.requiredCloses', 'simulator.topLever',
+  'simulator.compare',
+  // Action plan
+  'actionplan.day30', 'actionplan.day60', 'actionplan.day90', 'actionplan.topLevers',
+  'actionplan.topLeaks', 'actionplan.metrics', 'actionplan.rewardDesign',
+  'actionplan.vimigoal', 'actionplan.bottleneck',
+  // Health bands
+  'health.green', 'health.yellow', 'health.red',
+  // Report
+  'report.fullTitle', 'report.overview', 'report.detail',
+])
 
 // ── Domain enum → bilingual label maps ─────────────────────────────────────────
 

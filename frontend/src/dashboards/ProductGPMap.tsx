@@ -9,7 +9,7 @@ import { useEngine } from '@/store/selectors'
 import { useT } from '@/i18n/useT'
 import { Card, SectionHeader, Tag, EmptyState } from '@/components/ui'
 import { InsightCard } from '@/components/cards'
-import { ProductLadder } from '@/components/viz/ProductLadder'
+import { ProductFunnel } from '@/components/viz/ProductFunnel'
 import { GPBubble } from '@/components/viz/GPBubble'
 import type { ProductTag } from '@/engine/types'
 import { formatNumber, formatPct, formatRM } from '@/lib/format'
@@ -35,8 +35,8 @@ export function ProductGPMap() {
     <div className="space-y-6">
       <Card className="p-5 sm:p-6">
         <SectionHeader title={t('productgp.heading')} subtitle={t('value.lead')} />
-        <div className="mb-2 text-sm font-semibold text-slate-700">{t('productgp.ladder')}</div>
-        <ProductLadder />
+        <div className="mb-4 text-sm font-semibold text-slate-700">{t('productgp.ladder')}</div>
+        <ProductFunnel />
       </Card>
 
       <Card className="p-5 sm:p-6">

@@ -30,7 +30,7 @@ const PILLAR_ACCENT = {
 const REWARD_SHARE = 0.2
 
 export function ScenarioSimulator() {
-  const { t, d, lang } = useT()
+  const { t, d, dOne, lang } = useT()
   const { revenue, scenarios } = useEngine()
   const sim = useSimResult()
   const levers = useStore((s) => s.levers)
@@ -56,9 +56,9 @@ export function ScenarioSimulator() {
   const leverName = (k: LeverKey): string => {
     switch (k) {
       case 'trafficPct':
-        return d('pillar', 'traffic')
+        return dOne('pillar', 'traffic')
       case 'conversionPct':
-        return d('pillar', 'conversion')
+        return dOne('pillar', 'conversion')
       case 'abvPct':
         return t('kpi.abv')
       case 'gpMarginPct':

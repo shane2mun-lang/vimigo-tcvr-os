@@ -25,7 +25,7 @@ interface Row {
 }
 
 export function FunnelStageBar() {
-  const { t, d, lang } = useT()
+  const { t, d, dOne, lang } = useT()
   const { funnel } = useEngine()
 
   // Build per-stage counts from the step rates (fromCount/toCount carry the path).
@@ -85,7 +85,7 @@ export function FunnelStageBar() {
                 <title>{`${d('stage', row.key)} · ${formatNumber(row.count, lang)}`}</title>
               </path>
               <text x={WIDTH / 2} y={y + ROW_H / 2 - 3} textAnchor="middle" className="text-[12px] font-semibold" fill={textColor}>
-                {d('stage', row.key)}
+                {dOne('stage', row.key)}
               </text>
               <text x={WIDTH / 2} y={y + ROW_H / 2 + 13} textAnchor="middle" className="text-[11px] tabular-nums" fill={textColor}>
                 {formatNumber(row.count, lang)}

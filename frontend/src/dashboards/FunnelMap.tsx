@@ -22,7 +22,7 @@ const PILLAR_ACCENT: Record<TCVRPillar, string> = {
 }
 
 export function FunnelMap() {
-  const { t, d, lang } = useT()
+  const { t, d, dOne, lang } = useT()
   const { revenue, channels, funnel, retention, insights } = useEngine()
 
   const band = (p: TCVRPillar): Health =>
@@ -33,28 +33,28 @@ export function FunnelMap() {
   const leads = channels.totals.leads || revenue.traffic
   const segments: FunnelRingSegment[] = [
     {
-      pillar: d('pillar', 'traffic'),
+      pillar: dOne('pillar', 'traffic'),
       color: PILLAR_ACCENT.traffic,
       health: band('traffic'),
       label: t('traffic.leads'),
       value: formatNumber(leads, lang),
     },
     {
-      pillar: d('pillar', 'conversion'),
+      pillar: dOne('pillar', 'conversion'),
       color: PILLAR_ACCENT.conversion,
       health: band('conversion'),
       label: t('conversion.overall'),
       value: formatPct(funnel.overallConversion),
     },
     {
-      pillar: d('pillar', 'value'),
+      pillar: dOne('pillar', 'value'),
       color: PILLAR_ACCENT.value,
       health: band('value'),
       label: t('kpi.abv'),
       value: formatRMShort(revenue.averageBasketValue, lang),
     },
     {
-      pillar: d('pillar', 'recurring'),
+      pillar: dOne('pillar', 'recurring'),
       color: PILLAR_ACCENT.recurring,
       health: band('recurring'),
       label: t('kpi.repeatRate'),
