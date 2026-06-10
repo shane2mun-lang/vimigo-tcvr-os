@@ -135,6 +135,10 @@ export const strings = {
   'traffic.customers': { zh: '成交客户', en: 'Customers' },
   'traffic.paidLabel': { zh: '付费', en: 'Paid' },
   'traffic.organicLabel': { zh: '自然', en: 'Organic' },
+  'traffic.channelTypeHint': {
+    zh: '自动判定：填了「花费」= 付费；花费为 0 = 自然。要改标签，改「花费」那一格即可。',
+    en: 'Auto-detected: any Spend = Paid; zero spend = Organic. To change the tag, edit the Spend cell.',
+  },
 
   // ── Conversion module ────────────────────────────────────────────────────────
   'conversion.heading': { zh: '转化计算器', en: 'Conversion Calculator' },

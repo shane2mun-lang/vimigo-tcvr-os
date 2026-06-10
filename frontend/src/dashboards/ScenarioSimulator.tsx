@@ -27,8 +27,6 @@ const PILLAR_ACCENT = {
   recurring: '#10b981',
 } as const
 
-const REWARD_SHARE = 0.2
-
 export function ScenarioSimulator() {
   const { t, d, dOne, lang } = useT()
   const { revenue, scenarios } = useEngine()
@@ -36,6 +34,8 @@ export function ScenarioSimulator() {
   const levers = useStore((s) => s.levers)
   const setLevers = useStore((s) => s.setLevers)
   const resetLevers = useStore((s) => s.resetLevers)
+  const rewardSharePct = useStore((s) => s.rewardSharePct)
+  const setRewardSharePct = useStore((s) => s.setRewardSharePct)
   const explain = useExplain()
 
   const trafficPct = levers.trafficPct ?? 0
@@ -46,7 +46,7 @@ export function ScenarioSimulator() {
   const referralPct = levers.referralPct ?? 0
 
   const deltaGp = sim.deltaGp
-  const rewardBudget = Math.max(0, deltaGp) * REWARD_SHARE
+  const rewardBudget = (Math.max(0, deltaGp) * rewardSharePct) / 100
   const leadsNeeded = revenue.traffic * (1 + trafficPct / 100)
   // Closes scale with BOTH levers: more leads (traffic) and a better close rate
   // (conversion) each increase the deals the team must actually close.
@@ -147,7 +147,7 @@ export function ScenarioSimulator() {
               max={15}
               step={1}
               accent={PILLAR_ACCENT.value}
-              display={`+${gpMarginPct} pts`}
+              display={`${Math.round(revenue.gpMargin * 100)}% → ${Math.round(revenue.gpMargin * 100) + gpMarginPct}%  (+${gpMarginPct} pts)`}
               onChange={(v) => setLevers({ gpMarginPct: v })}
               helpKey="sliderGpMargin"
             />
@@ -200,6 +200,20 @@ export function ScenarioSimulator() {
                 value={formatRM(rewardBudget, lang)}
                 accentColor={PILLAR_ACCENT.recurring}
                 helpKey="rewardBudget"
+                sub={
+                  <span className="inline-flex items-center gap-1">
+                    Δ GP ×
+                    <input
+                      type="number"
+                      min={5}
+                      max={50}
+                      value={rewardSharePct}
+                      onChange={(e) => setRewardSharePct(Number(e.target.value))}
+                      className="w-12 rounded border border-slate-200 px-1 py-0.5 text-center text-xs tabular-nums outline-none focus:border-brand-accent"
+                    />
+                    %
+                  </span>
+                }
               />
               <KPICard
                 label={t('simulator.topLever')}

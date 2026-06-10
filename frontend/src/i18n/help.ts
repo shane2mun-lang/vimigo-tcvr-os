@@ -101,6 +101,10 @@ export const helpStrings = {
     what: { zh: '这个渠道的 Leads 有没有人系统地跟进 — 没跟进的 Leads = 白买的流量。', en: 'Is someone systematically following up this channel\'s leads? Unfollowed leads = wasted traffic spend.' },
     how: { zh: '开/关记录用；提醒你哪个渠道在漏 Leads。', en: 'A record toggle — flags which channels leak leads.' },
   },
+  channelType: {
+    what: { zh: 'Paid/Organic 标签是自动判定的，不用手动设置：填了「花费」= 付费 Paid；花费是 0 或空 = 自然 Organic。', en: 'The Paid/Organic tag is automatic — no manual setting: any "Spend" = Paid; zero/empty spend = Organic.' },
+    how: { zh: '想改标签？改「花费」那一格就行。付费渠道计入付费效率（CPL/ROAS/CAC），自然渠道照常显示但不稀释广告数字。', en: 'To change the tag, change the Spend cell. Paid channels feed paid efficiency (CPL/ROAS/CAC); organic channels are shown but never dilute ad numbers.' },
+  },
   paidCpl: {
     what: { zh: '只算付费广告的 Lead 成本 — 不被免费流量拉低，看广告的真实效率。', en: 'Lead cost from paid ads ONLY — not flattered by free traffic; the real ad efficiency.' },
     how: { zh: '付费 CPL = 付费渠道总花费 ÷ 付费渠道总 Leads', en: 'Paid CPL = total paid spend ÷ total paid-channel leads' },
@@ -220,8 +224,8 @@ export const helpStrings = {
     how: { zh: 'ΔGP = 模拟后毛利 − 现在毛利；营业额按 流量×转化×客单×复购×转介 五个系数同步推算。', en: 'ΔGP = simulated GP − current GP; revenue recomputed via the five TCVR multipliers.' },
   },
   rewardBudget: {
-    what: { zh: '建议从增量毛利中拿 20% 做团队奖励池 — 团队分到钱，公司还多赚 80%。', en: 'Suggested team reward pool: 20% of the incremental GP — the team earns, you still keep 80%.' },
-    how: { zh: '奖励池 = max(0, ΔGP) × 20%', en: 'Reward budget = max(0, ΔGP) × 20%' },
+    what: { zh: '从增量毛利中拿一个比例做团队奖励池 — 团队分到钱，公司留下其余。比例可在卡片上直接修改（默认 20%）。', en: 'A share of the INCREMENTAL GP released as the team reward pool — the team earns, you keep the rest. Edit the % right on the card (default 20%).' },
+    how: { zh: '奖励池 = max(0, ΔGP) × 你设定的比例%', en: 'Reward budget = max(0, ΔGP) × your chosen %' },
   },
   leadsNeeded: {
     what: { zh: '这个情景下市场部每月要交付的 Leads 数。', en: 'Leads marketing must deliver monthly under this scenario.' },

@@ -83,7 +83,9 @@ export function TrafficModule() {
           <TableShell
             head={
               <tr>
-                <Th>{t('traffic.channel')}</Th>
+                <Th>
+                  <span className="inline-flex items-center gap-1">{t('traffic.channel')}<HelpTip k="channelType" side="bottom" align="left" /></span>
+                </Th>
                 <Th className="text-right">{t('traffic.impressions')}</Th>
                 <Th className="text-right">{t('traffic.leads')}</Th>
                 <Th className="text-right">{t('traffic.spend')}</Th>
@@ -143,9 +145,11 @@ export function TrafficModule() {
                         onChange={(v) => updateChannel(c.id, { name: v })}
                       />
                       {m && (
-                        <Tag color={m.isOrganic ? 'emerald' : 'blue'} className="shrink-0">
-                          {m.isOrganic ? t('traffic.organicLabel') : t('traffic.paidLabel')}
-                        </Tag>
+                        <span className="shrink-0 cursor-help" title={t('traffic.channelTypeHint')}>
+                          <Tag color={m.isOrganic ? 'emerald' : 'blue'}>
+                            {m.isOrganic ? t('traffic.organicLabel') : t('traffic.paidLabel')}
+                          </Tag>
+                        </span>
                       )}
                     </div>
                   </Td>

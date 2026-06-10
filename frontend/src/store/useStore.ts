@@ -64,6 +64,8 @@ export interface StoreState extends TCVRInput {
   student: StudentInfo | null
   notionPageId: string | null
   syncCount: number
+  /** Share of incremental GP released as the team reward pool (percent, default 20). */
+  rewardSharePct: number
 
   setLang: (l: Lang) => void
   setProfile: (patch: Partial<CompanyProfile>) => void
@@ -81,6 +83,7 @@ export interface StoreState extends TCVRInput {
   setAI: (f: AIFeature, s: AIState) => void
   setStudent: (s: StudentInfo | null) => void
   setNotionSync: (pageId: string | null, syncCount: number) => void
+  setRewardSharePct: (v: number) => void
   loadInput: (input: TCVRInput, name?: string) => void
   clearAll: () => void
   loadSample: () => void
@@ -98,6 +101,7 @@ export const useStore = create<StoreState>()(
       student: null,
       notionPageId: null,
       syncCount: 0,
+      rewardSharePct: 20,
 
       setLang: (lang) => set({ lang }),
 
@@ -128,6 +132,7 @@ export const useStore = create<StoreState>()(
 
       setStudent: (student) => set({ student, ...(student === null ? { notionPageId: null, syncCount: 0 } : {}) }),
       setNotionSync: (notionPageId, syncCount) => set({ notionPageId, syncCount }),
+      setRewardSharePct: (v) => set({ rewardSharePct: Math.min(50, Math.max(5, Math.round(v) || 20)) }),
 
       loadInput: (input, name) =>
         set({
@@ -170,6 +175,7 @@ export const useStore = create<StoreState>()(
         student: s.student,
         notionPageId: s.notionPageId,
         syncCount: s.syncCount,
+        rewardSharePct: s.rewardSharePct,
       }),
     },
   ),
