@@ -324,6 +324,11 @@ export const strings = {
     zh: '本报告供与 vimigo CSM 团队或内部团队讨论使用。',
     en: 'Prepared for discussion with your vimigo CSM team or internal team.',
   },
+  'report.retentionRevenue': { zh: '复购贡献营业额', en: 'Retention revenue' },
+  'report.lostRetention': { zh: '复购缺口损失', en: 'Lost retention value' },
+  'report.referralForecast': { zh: '转介绍销售预测', en: 'Referral sales forecast' },
+  'report.referralGpForecast': { zh: '转介绍 GP 预测', en: 'Referral GP forecast' },
+  'report.referralLtv': { zh: '转介绍 LTV', en: 'Referral LTV' },
 
   // ── Empty states ─────────────────────────────────────────────────────────────
   'empty.fillTraffic': { zh: '填写流量数据以查看此项', en: 'Fill in Traffic to see this' },

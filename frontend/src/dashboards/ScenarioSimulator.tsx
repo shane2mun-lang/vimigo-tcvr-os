@@ -47,7 +47,9 @@ export function ScenarioSimulator() {
   const deltaGp = sim.deltaGp
   const rewardBudget = Math.max(0, deltaGp) * REWARD_SHARE
   const leadsNeeded = revenue.traffic * (1 + trafficPct / 100)
-  const closesNeeded = revenue.newCustomers * (1 + conversionPct / 100)
+  // Closes scale with BOTH levers: more leads (traffic) and a better close rate
+  // (conversion) each increase the deals the team must actually close.
+  const closesNeeded = revenue.newCustomers * (1 + trafficPct / 100) * (1 + conversionPct / 100)
 
   const topLever = scenarios.topLever
   const leverName = (k: LeverKey): string => {

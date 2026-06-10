@@ -329,11 +329,11 @@ export function ReportPrint() {
           <KpiBox label={t('recurring.repeatRate')} value={formatPct(re.repeatPurchaseRate)} accent={PILLAR_COLOR.recurring} />
           <KpiBox label={t('recurring.referralRate')} value={formatPct(re.referralRate)} accent={PILLAR_COLOR.recurring} />
           <KpiBox label={t('kpi.ltv')} value={formatRM(re.ltv, lang)} />
-          <KpiBox label="Referral LTV" value={formatRM(re.referralLtv, lang)} />
-          <KpiBox label={t('kpi.currentSales')} value={formatRM(re.retentionRevenue, lang)} />
-          <KpiBox label={t('actionplan.topLeaks')} value={formatRM(re.lostRetentionValue, lang)} accent="#dc2626" />
-          <KpiBox label={t('recurring.referralsPer')} value={formatRM(re.referralSalesForecast, lang)} />
-          <KpiBox label={`${t('traffic.gp')} (Ref.)`} value={formatRM(re.referralGpForecast, lang)} />
+          <KpiBox label={t('report.referralLtv')} value={formatRM(re.referralLtv, lang)} />
+          <KpiBox label={t('report.retentionRevenue')} value={formatRM(re.retentionRevenue, lang)} />
+          <KpiBox label={t('report.lostRetention')} value={formatRM(re.lostRetentionValue, lang)} accent="#dc2626" />
+          <KpiBox label={t('report.referralForecast')} value={formatRM(re.referralSalesForecast, lang)} />
+          <KpiBox label={t('report.referralGpForecast')} value={formatRM(re.referralGpForecast, lang)} />
         </div>
         {re.missingMechanisms.length > 0 && (
           <div className="mt-2 text-[10px] text-slate-600">
