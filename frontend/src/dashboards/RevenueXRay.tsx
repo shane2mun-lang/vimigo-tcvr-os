@@ -36,34 +36,37 @@ export function RevenueXRay() {
         <SectionHeader title={t('xray.heading')} subtitle={t('app.subtitle')} />
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          <KPICard label={t('kpi.currentSales')} value={formatRM(revenue.revenue, lang)} accentColor="#6366f1" />
-          <KPICard label={t('kpi.targetSales')} value={targetSales > 0 ? formatRM(targetSales, lang) : '—'} />
+          <KPICard label={t('kpi.currentSales')} value={formatRM(revenue.revenue, lang)} accentColor="#6366f1" helpKey="currentSales" />
+          <KPICard label={t('kpi.targetSales')} value={targetSales > 0 ? formatRM(targetSales, lang) : '—'} helpKey="targetSales" />
           <KPICard
             label={t('kpi.salesGap')}
             value={salesGap > 0 ? formatRM(salesGap, lang) : '—'}
             tone={salesGap > 0 ? 'bad' : 'default'}
+            helpKey="salesGap"
           />
-          <KPICard label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} tone="good" />
+          <KPICard label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} tone="good" helpKey="gp" />
 
-          <KPICard label={t('kpi.gpMargin')} value={formatPct(revenue.gpMargin)} />
-          <KPICard label={t('kpi.abv')} value={formatRM(revenue.averageBasketValue, lang)} />
-          <KPICard label={t('kpi.cac')} value={formatRM(channels.blendedCAC, lang)} />
-          <KPICard label={t('kpi.paidCac')} value={formatRM(channels.paidCAC, lang)} accentColor={PILLAR_ACCENT.traffic} />
-          <KPICard label={t('kpi.ltv')} value={formatRM(revenue.ltv, lang)} />
+          <KPICard label={t('kpi.gpMargin')} value={formatPct(revenue.gpMargin)} helpKey="gpMargin" />
+          <KPICard label={t('kpi.abv')} value={formatRM(revenue.averageBasketValue, lang)} helpKey="abv" />
+          <KPICard label={t('kpi.cac')} value={formatRM(channels.blendedCAC, lang)} helpKey="blendedCac" />
+          <KPICard label={t('kpi.paidCac')} value={formatRM(channels.paidCAC, lang)} accentColor={PILLAR_ACCENT.traffic} helpKey="paidCac" />
+          <KPICard label={t('kpi.ltv')} value={formatRM(revenue.ltv, lang)} helpKey="ltv" />
 
           <KPICard
             label={t('kpi.ltvCac')}
             value={formatMultiplier(revenue.ltvToCac, 1)}
             tone={revenue.ltvToCac >= 3 ? 'good' : revenue.ltvToCac > 0 && revenue.ltvToCac < 1 ? 'bad' : 'default'}
+            helpKey="ltvCac"
           />
-          <KPICard label={t('kpi.convRate')} value={formatPct(revenue.conversionRate)} accentColor={PILLAR_ACCENT.conversion} />
-          <KPICard label={t('kpi.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} accentColor={PILLAR_ACCENT.recurring} />
-          <KPICard label={t('kpi.referralRate')} value={formatPct(retention.referralRate)} accentColor={PILLAR_ACCENT.recurring} />
+          <KPICard label={t('kpi.convRate')} value={formatPct(revenue.conversionRate)} accentColor={PILLAR_ACCENT.conversion} helpKey="convRate" />
+          <KPICard label={t('kpi.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} accentColor={PILLAR_ACCENT.recurring} helpKey="repeatRate" />
+          <KPICard label={t('kpi.referralRate')} value={formatPct(retention.referralRate)} accentColor={PILLAR_ACCENT.recurring} helpKey="referralRate" />
 
           <KPICard
             label={t('kpi.netProfit')}
             value={formatRM(revenue.netProfitImpact, lang)}
             tone={revenue.netProfitImpact > 0 ? 'good' : revenue.netProfitImpact < 0 ? 'bad' : 'default'}
+            helpKey="netProfit"
             sub={
               <span className="tabular-nums">
                 {formatNumber(revenue.newCustomers, lang)} {t('recurring.newCustomers')}
@@ -93,6 +96,7 @@ export function RevenueXRay() {
                 score={ph.score}
                 detail={detail}
                 accent={PILLAR_ACCENT[ph.pillar]}
+                helpKey="pillarHealth"
               />
             )
           })}

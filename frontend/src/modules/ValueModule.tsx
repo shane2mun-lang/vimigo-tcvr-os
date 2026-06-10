@@ -6,6 +6,7 @@ import { useT } from '@/i18n/useT'
 import { Card, SectionHeader, Button, Tag } from '@/components/ui'
 import { NumberCell, TextCell, SelectCell, ToggleCell } from '@/components/fields'
 import { TableShell, Th, Td, RemoveRowButton } from '@/components/table'
+import { HelpTip } from '@/components/HelpTip'
 import { AIPanel } from '@/components/AIPanel'
 import { useCategorize } from '@/ai/useAI'
 import { formatRM, formatPct, formatPctRaw } from '@/lib/format'
@@ -55,14 +56,14 @@ export function ValueModule() {
           head={
             <tr>
               <Th>{t('value.product')}</Th>
-              <Th>{t('value.type')}</Th>
+              <Th><span className="inline-flex items-center gap-1">{t('value.type')}<HelpTip k="productTag" side="bottom" align="right" /></span></Th>
               <Th className="text-right">{t('value.price')}</Th>
               <Th className="text-right">{t('value.cost')}</Th>
               <Th className="text-right">{t('value.cycle')}</Th>
               <Th className="text-right">{t('value.closeRate')}</Th>
               <Th className="text-right">{t('value.volume')}</Th>
-              <Th className="text-right">{t('value.gpUnit')}</Th>
-              <Th className="text-right">{t('value.margin')}</Th>
+              <Th className="text-right"><span className="inline-flex items-center gap-1">{t('value.gpUnit')}<HelpTip k="gpUnit" side="bottom" align="right" /></span></Th>
+              <Th className="text-right"><span className="inline-flex items-center gap-1">{t('value.margin')}<HelpTip k="productMargin" side="bottom" align="right" /></span></Th>
               <Th />
             </tr>
           }

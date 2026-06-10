@@ -5,6 +5,7 @@ import { Card, SectionHeader } from '@/components/ui'
 import { KPICard, MetricRow } from '@/components/cards'
 import { NumberCell, TextCell, ToggleCell } from '@/components/fields'
 import { TableShell, Th, Td } from '@/components/table'
+import { HelpTip } from '@/components/HelpTip'
 import { formatRM, formatPct } from '@/lib/format'
 
 const DASH = '—'
@@ -31,7 +32,7 @@ export function ConversionModule() {
               <Th>{t('common.owner')}</Th>
               <Th>{t('conversion.lostReason')}</Th>
               <Th>{t('conversion.nextAction')}</Th>
-              <Th className="text-center">{t('conversion.hasSop')}</Th>
+              <Th className="text-center"><span className="inline-flex items-center gap-1">{t('conversion.hasSop')}<HelpTip k="sop" side="bottom" align="right" /></span></Th>
             </tr>
           }
         >
@@ -62,15 +63,16 @@ export function ConversionModule() {
       </Card>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KPICard label={t('conversion.overall')} value={formatPct(funnel.overallConversion)} accentColor="#8b5cf6" />
+        <KPICard label={t('conversion.overall')} value={formatPct(funnel.overallConversion)} accentColor="#8b5cf6" helpKey="overallConv" />
         <KPICard
           label={t('conversion.biggestDrop')}
           value={drop ? `${d('stage', drop.from)} → ${d('stage', drop.to)}` : DASH}
           sub={drop ? formatPct(drop.rate) : undefined}
           tone="bad"
+          helpKey="biggestDrop"
         />
-        <KPICard label={t('conversion.lostValue')} value={formatRM(funnel.lostSalesValue, lang)} tone="bad" />
-        <KPICard label={t('conversion.followupLeak')} value={formatRM(funnel.followUpLeakageValue, lang)} tone="bad" />
+        <KPICard label={t('conversion.lostValue')} value={formatRM(funnel.lostSalesValue, lang)} tone="bad" helpKey="lostValue" />
+        <KPICard label={t('conversion.followupLeak')} value={formatRM(funnel.followUpLeakageValue, lang)} tone="bad" helpKey="followupLeak" />
       </div>
 
       <Card className="p-5 sm:p-6">
@@ -82,6 +84,7 @@ export function ConversionModule() {
               label={`${d('stage', step.from)} → ${d('stage', step.to)}`}
               value={formatPct(step.rate)}
               hint={step.bridged ? '~' : undefined}
+              helpKey="stepRate"
             />
           ))}
         </div>

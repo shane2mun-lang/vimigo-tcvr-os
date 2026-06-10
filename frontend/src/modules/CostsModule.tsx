@@ -47,7 +47,7 @@ export function CostsModule() {
       <Card className="p-5 sm:p-6">
         <SectionHeader title={t('kpi.netProfit')} />
         <div>
-          <MetricRow label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} />
+          <MetricRow label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} helpKey="gp" />
           <MetricRow label={t('common.total')} value={formatRM(totalCost, lang)} />
           <MetricRow
             label={t('kpi.netProfit')}
@@ -56,10 +56,12 @@ export function CostsModule() {
                 {formatRM(revenue.netProfitImpact, lang)}
               </span>
             }
+            helpKey="netProfit"
           />
           <MetricRow
             label={`${t('costs.reward')} · ${t('kpi.gpMargin')}`}
             value={formatPct(rewardShareOfGp)}
+            helpKey="rewardShare"
           />
         </div>
       </Card>

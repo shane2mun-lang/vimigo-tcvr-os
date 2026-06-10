@@ -85,13 +85,14 @@ export function RecurringModule() {
       <Card className="p-5 sm:p-6">
         <SectionHeader title={t('nav.recurring')} />
         <div>
-          <MetricRow label={t('recurring.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} />
-          <MetricRow label={t('recurring.referralRate')} value={formatPct(retention.referralRate)} />
-          <MetricRow label={t('kpi.ltv')} value={formatRM(retention.ltv, lang)} />
-          <MetricRow label={t('conversion.lostValue')} value={formatRM(retention.lostRetentionValue, lang)} />
+          <MetricRow label={t('recurring.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} helpKey="repeatRate" />
+          <MetricRow label={t('recurring.referralRate')} value={formatPct(retention.referralRate)} helpKey="referralRate" />
+          <MetricRow label={t('kpi.ltv')} value={formatRM(retention.ltv, lang)} helpKey="ltv" />
+          <MetricRow label={t('conversion.lostValue')} value={formatRM(retention.lostRetentionValue, lang)} helpKey="lostRetention" />
           <MetricRow
             label={`${t('recurring.referralRate')} · ${t('traffic.sales')}`}
             value={formatRM(retention.referralSalesForecast, lang)}
+            helpKey="referralForecast"
           />
         </div>
       </Card>

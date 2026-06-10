@@ -7,6 +7,8 @@ import { Card, SectionHeader, Button, EmptyState, Tag } from '@/components/ui'
 import { KPICard } from '@/components/cards'
 import { NumberCell, TextCell, ToggleCell } from '@/components/fields'
 import { TableShell, Th, Td, RemoveRowButton } from '@/components/table'
+import { HelpTip } from '@/components/HelpTip'
+import type { HelpKey } from '@/i18n/help'
 import { formatRM, formatPct, formatNumber, formatMultiplier } from '@/lib/format'
 
 const CHANNEL_PRESETS = [
@@ -18,10 +20,23 @@ const CHANNEL_PRESETS = [
 
 const DASH = '—'
 
-function Stat({ label, value, accent }: { label: string; value: ReactNode; accent?: string }) {
+function Stat({
+  label,
+  value,
+  accent,
+  helpKey,
+}: {
+  label: string
+  value: ReactNode
+  accent?: string
+  helpKey?: HelpKey
+}) {
   return (
     <div className="rounded-lg bg-slate-50 px-3 py-2">
-      <div className="text-[11px] text-slate-500">{label}</div>
+      <div className="flex items-center gap-1 text-[11px] text-slate-500">
+        <span>{label}</span>
+        {helpKey && <HelpTip k={helpKey} align="left" />}
+      </div>
       <div className="mt-0.5 text-sm font-semibold tabular-nums" style={accent ? { color: accent } : undefined}>
         {value}
       </div>
@@ -72,15 +87,27 @@ export function TrafficModule() {
                 <Th className="text-right">{t('traffic.impressions')}</Th>
                 <Th className="text-right">{t('traffic.leads')}</Th>
                 <Th className="text-right">{t('traffic.spend')}</Th>
-                <Th className="text-right">{t('traffic.quality')}</Th>
-                <Th className="text-center">{t('traffic.followup')}</Th>
+                <Th className="text-right">
+                  <span className="inline-flex items-center gap-1">{t('traffic.quality')}<HelpTip k="leadQuality" side="bottom" align="right" /></span>
+                </Th>
+                <Th className="text-center">
+                  <span className="inline-flex items-center gap-1">{t('traffic.followup')}<HelpTip k="channelFollowup" side="bottom" align="right" /></span>
+                </Th>
                 <Th className="text-right">{t('traffic.closed')}</Th>
                 <Th className="text-right">{t('traffic.sales')}</Th>
                 <Th className="text-right">{t('traffic.gp')}</Th>
-                <Th className="text-right">{t('traffic.cpl')}</Th>
-                <Th className="text-right">{t('traffic.convRate')}</Th>
-                <Th className="text-right">{t('traffic.roi')}</Th>
-                <Th className="text-right">{t('traffic.contribution')}</Th>
+                <Th className="text-right">
+                  <span className="inline-flex items-center gap-1">{t('traffic.cpl')}<HelpTip k="cpl" side="bottom" align="right" /></span>
+                </Th>
+                <Th className="text-right">
+                  <span className="inline-flex items-center gap-1">{t('traffic.convRate')}<HelpTip k="channelConv" side="bottom" align="right" /></span>
+                </Th>
+                <Th className="text-right">
+                  <span className="inline-flex items-center gap-1">{t('traffic.roi')}<HelpTip k="roi" side="bottom" align="right" /></span>
+                </Th>
+                <Th className="text-right">
+                  <span className="inline-flex items-center gap-1">{t('traffic.contribution')}<HelpTip k="contribution" side="bottom" align="right" /></span>
+                </Th>
                 <Th />
               </tr>
             }
@@ -149,24 +176,24 @@ export function TrafficModule() {
       {channels.length > 0 && (
         <>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <KPICard label={t('traffic.bestChannel')} value={bestName ?? DASH} tone="good" accentColor="#3b82f6" />
-            <KPICard label={t('traffic.worstChannel')} value={worstName ?? DASH} tone="bad" />
-            <KPICard label={t('traffic.blendedCac')} value={formatRM(analysis.blendedCAC, lang)} />
-            <KPICard label={t('traffic.gapToTarget')} value={formatNumber(gapLeads, lang)} sub={t('traffic.leads')} />
+            <KPICard label={t('traffic.bestChannel')} value={bestName ?? DASH} tone="good" accentColor="#3b82f6" helpKey="bestChannel" />
+            <KPICard label={t('traffic.worstChannel')} value={worstName ?? DASH} tone="bad" helpKey="worstChannel" />
+            <KPICard label={t('traffic.blendedCac')} value={formatRM(analysis.blendedCAC, lang)} helpKey="blendedCac" />
+            <KPICard label={t('traffic.gapToTarget')} value={formatNumber(gapLeads, lang)} sub={t('traffic.leads')} helpKey="trafficGap" />
           </div>
 
           {/* Paid Channel Efficiency — ad performance, undiluted by free traffic */}
           <Card className="p-5 sm:p-6 ring-2 ring-blue-100">
             <SectionHeader title={t('traffic.paidEfficiency')} subtitle={t('traffic.paidEfficiencyLead')} />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Stat label={t('traffic.paidCpl')} value={formatRM(paid.cpl, lang)} accent="#3b82f6" />
-              <Stat label={t('traffic.paidRoas')} value={formatMultiplier(paid.roas, 1)} accent="#3b82f6" />
-              <Stat label={t('traffic.paidGpRoas')} value={formatMultiplier(paid.gpRoas, 1)} accent="#3b82f6" />
-              <Stat label={t('traffic.paidCac')} value={formatRM(paid.cac, lang)} accent="#3b82f6" />
+              <Stat label={t('traffic.paidCpl')} value={formatRM(paid.cpl, lang)} accent="#3b82f6" helpKey="paidCpl" />
+              <Stat label={t('traffic.paidRoas')} value={formatMultiplier(paid.roas, 1)} accent="#3b82f6" helpKey="paidRoas" />
+              <Stat label={t('traffic.paidGpRoas')} value={formatMultiplier(paid.gpRoas, 1)} accent="#3b82f6" helpKey="paidGpRoas" />
+              <Stat label={t('traffic.paidCac')} value={formatRM(paid.cac, lang)} accent="#3b82f6" helpKey="paidCac" />
               <Stat label={t('traffic.leads')} value={formatNumber(paid.leads, lang)} />
               <Stat label={t('traffic.customers')} value={formatNumber(paid.customers, lang)} />
               <Stat label={t('traffic.sales')} value={formatRM(paid.sales, lang)} />
-              <Stat label={t('traffic.contribution')} value={formatPct(paid.contributionPct)} />
+              <Stat label={t('traffic.contribution')} value={formatPct(paid.contributionPct)} helpKey="contribution" />
             </div>
           </Card>
 
@@ -178,8 +205,8 @@ export function TrafficModule() {
               <Stat label={t('traffic.customers')} value={formatNumber(organic.customers, lang)} />
               <Stat label={t('traffic.sales')} value={formatRM(organic.sales, lang)} accent="#10b981" />
               <Stat label={t('traffic.gp')} value={formatRM(organic.gp, lang)} accent="#10b981" />
-              <Stat label={t('traffic.convRate')} value={formatPct(organic.conversionRate)} />
-              <Stat label={t('traffic.contribution')} value={formatPct(organic.contributionPct)} accent="#10b981" />
+              <Stat label={t('traffic.convRate')} value={formatPct(organic.conversionRate)} helpKey="channelConv" />
+              <Stat label={t('traffic.contribution')} value={formatPct(organic.contributionPct)} accent="#10b981" helpKey="organicPanel" />
             </div>
           </Card>
         </>

@@ -73,32 +73,33 @@ export function FunnelMap() {
             {/* Traffic */}
             <PillarCard pillar="traffic" accent={PILLAR_ACCENT.traffic} band={band('traffic')} title={d('pillar', 'traffic')}>
               <MetricRow label={t('traffic.leads')} value={formatNumber(leads, lang)} />
-              <MetricRow label={t('traffic.paidCpl')} value={formatRM(channels.paid.cpl, lang)} />
-              <MetricRow label={t('traffic.gapToTarget')} value={formatNumber(channels.trafficGap.gapLeads ?? 0, lang)} />
+              <MetricRow label={t('traffic.paidCpl')} value={formatRM(channels.paid.cpl, lang)} helpKey="paidCpl" />
+              <MetricRow label={t('traffic.gapToTarget')} value={formatNumber(channels.trafficGap.gapLeads ?? 0, lang)} helpKey="trafficGap" />
             </PillarCard>
 
             {/* Conversion */}
             <PillarCard pillar="conversion" accent={PILLAR_ACCENT.conversion} band={band('conversion')} title={d('pillar', 'conversion')}>
-              <MetricRow label={t('conversion.overall')} value={formatPct(funnel.overallConversion)} />
+              <MetricRow label={t('conversion.overall')} value={formatPct(funnel.overallConversion)} helpKey="overallConv" />
               <MetricRow
                 label={t('conversion.biggestDrop')}
                 value={funnel.biggestDropStage ? d('stage', funnel.biggestDropStage.to) : '—'}
+                helpKey="biggestDrop"
               />
-              <MetricRow label={t('conversion.lostValue')} value={formatRM(funnel.lostGPValue, lang)} />
+              <MetricRow label={t('conversion.lostValue')} value={formatRM(funnel.lostGPValue, lang)} helpKey="lostValue" />
             </PillarCard>
 
             {/* Value */}
             <PillarCard pillar="value" accent={PILLAR_ACCENT.value} band={band('value')} title={d('pillar', 'value')}>
-              <MetricRow label={t('kpi.abv')} value={formatRM(revenue.averageBasketValue, lang)} />
-              <MetricRow label={t('kpi.gpMargin')} value={formatPct(revenue.gpMargin)} />
-              <MetricRow label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} />
+              <MetricRow label={t('kpi.abv')} value={formatRM(revenue.averageBasketValue, lang)} helpKey="abv" />
+              <MetricRow label={t('kpi.gpMargin')} value={formatPct(revenue.gpMargin)} helpKey="gpMargin" />
+              <MetricRow label={t('kpi.gp')} value={formatRM(revenue.grossProfit, lang)} helpKey="gp" />
             </PillarCard>
 
             {/* Recurring */}
             <PillarCard pillar="recurring" accent={PILLAR_ACCENT.recurring} band={band('recurring')} title={d('pillar', 'recurring')}>
-              <MetricRow label={t('kpi.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} />
-              <MetricRow label={t('kpi.referralRate')} value={formatPct(retention.referralRate)} />
-              <MetricRow label={t('kpi.ltv')} value={formatRM(retention.ltv, lang)} />
+              <MetricRow label={t('kpi.repeatRate')} value={formatPct(retention.repeatPurchaseRate)} helpKey="repeatRate" />
+              <MetricRow label={t('kpi.referralRate')} value={formatPct(retention.referralRate)} helpKey="referralRate" />
+              <MetricRow label={t('kpi.ltv')} value={formatRM(retention.ltv, lang)} helpKey="ltv" />
             </PillarCard>
           </div>
         </div>

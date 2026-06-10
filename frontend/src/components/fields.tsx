@@ -1,4 +1,6 @@
 import { cn } from './ui'
+import { HelpTip } from './HelpTip'
+import type { HelpKey } from '@/i18n/help'
 import type { ReactNode } from 'react'
 
 export function parseNum(str: string): number | undefined {
@@ -142,6 +144,7 @@ export function LabeledSlider({
   onChange,
   display,
   accent = '#6366f1',
+  helpKey,
 }: {
   label: string
   value: number
@@ -151,11 +154,15 @@ export function LabeledSlider({
   onChange: (v: number) => void
   display?: ReactNode
   accent?: string
+  helpKey?: HelpKey
 }) {
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between">
-        <span className="text-sm font-medium text-slate-700">{label}</span>
+        <span className="flex items-center gap-1 text-sm font-medium text-slate-700">
+          {label}
+          {helpKey && <HelpTip k={helpKey} align="left" />}
+        </span>
         <span className="text-sm font-semibold tabular-nums" style={{ color: accent }}>
           {display ?? `${value > 0 ? '+' : ''}${value}%`}
         </span>

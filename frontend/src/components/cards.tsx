@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { cn, healthStyle } from './ui'
 import { useT } from '@/i18n/useT'
+import { HelpTip } from './HelpTip'
+import type { HelpKey } from '@/i18n/help'
 import type { Health, InsightSeverity } from '@/engine/types'
 
 // ── KPI card ──────────────────────────────────────────────────────────────────
@@ -10,12 +12,14 @@ export function KPICard({
   sub,
   tone = 'default',
   accentColor,
+  helpKey,
 }: {
   label: string
   value: ReactNode
   sub?: ReactNode
   tone?: 'default' | 'good' | 'bad' | 'accent'
   accentColor?: string
+  helpKey?: HelpKey
 }) {
   const tones: Record<string, string> = {
     default: 'text-slate-900',
@@ -25,7 +29,10 @@ export function KPICard({
   }
   return (
     <div className="card p-4">
-      <div className="text-xs font-medium text-slate-500">{label}</div>
+      <div className="flex items-center gap-1 text-xs font-medium text-slate-500">
+        <span>{label}</span>
+        {helpKey && <HelpTip k={helpKey} align="left" />}
+      </div>
       <div
         key={typeof value === 'string' || typeof value === 'number' ? String(value) : undefined}
         className={cn('mt-1 animate-countup text-2xl font-semibold tabular-nums', tones[tone])}
@@ -59,19 +66,22 @@ export function PillarHealthTile({
   score,
   detail,
   accent,
+  helpKey,
 }: {
   pillar: string
   health: Health
   score: number
   detail?: string
   accent: string
+  helpKey?: HelpKey
 }) {
   const s = healthStyle(health)
   return (
     <div className={cn('rounded-2xl p-4 ring-1', s.bg)}>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold" style={{ color: accent }}>
+        <span className="flex items-center gap-1 text-sm font-semibold" style={{ color: accent }}>
           {pillar}
+          {helpKey && <HelpTip k={helpKey} align="left" />}
         </span>
         <HealthBadge health={health} />
       </div>
@@ -114,12 +124,23 @@ export function InsightCard({
 }
 
 // ── Small metric row (label · value) ───────────────────────────────────────────
-export function MetricRow({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
+export function MetricRow({
+  label,
+  value,
+  hint,
+  helpKey,
+}: {
+  label: string
+  value: ReactNode
+  hint?: string
+  helpKey?: HelpKey
+}) {
   return (
     <div className="flex items-center justify-between border-b border-slate-100 py-2 last:border-0">
-      <span className="text-sm text-slate-500">
-        {label}
-        {hint && <span className="ml-1 text-xs text-slate-300">{hint}</span>}
+      <span className="flex items-center gap-1 text-sm text-slate-500">
+        <span>{label}</span>
+        {hint && <span className="text-xs text-slate-300">{hint}</span>}
+        {helpKey && <HelpTip k={helpKey} align="left" />}
       </span>
       <span className="text-sm font-semibold tabular-nums text-slate-800">{value}</span>
     </div>

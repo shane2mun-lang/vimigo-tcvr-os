@@ -13,6 +13,7 @@ import { useT } from '@/i18n/useT'
 import { Card, SectionHeader, Button } from '@/components/ui'
 import { KPICard } from '@/components/cards'
 import { LabeledSlider } from '@/components/fields'
+import { HelpTip } from '@/components/HelpTip'
 import { AIPanel } from '@/components/AIPanel'
 import { ScenarioBars } from '@/components/viz/ScenarioBars'
 import { useExplain } from '@/ai/useAI'
@@ -117,6 +118,7 @@ export function ScenarioSimulator() {
               step={5}
               accent={PILLAR_ACCENT.traffic}
               onChange={(v) => setLevers({ trafficPct: v })}
+              helpKey="sliderTraffic"
             />
             <LabeledSlider
               label={d('pillar', 'conversion')}
@@ -126,6 +128,7 @@ export function ScenarioSimulator() {
               step={5}
               accent={PILLAR_ACCENT.conversion}
               onChange={(v) => setLevers({ conversionPct: v })}
+              helpKey="sliderConversion"
             />
             <LabeledSlider
               label={t('kpi.abv')}
@@ -135,6 +138,7 @@ export function ScenarioSimulator() {
               step={5}
               accent={PILLAR_ACCENT.value}
               onChange={(v) => setLevers({ abvPct: v })}
+              helpKey="sliderAbv"
             />
             <LabeledSlider
               label={t('kpi.gpMargin')}
@@ -145,6 +149,7 @@ export function ScenarioSimulator() {
               accent={PILLAR_ACCENT.value}
               display={`+${gpMarginPct} pts`}
               onChange={(v) => setLevers({ gpMarginPct: v })}
+              helpKey="sliderGpMargin"
             />
             <LabeledSlider
               label={t('kpi.repeatRate')}
@@ -154,6 +159,7 @@ export function ScenarioSimulator() {
               step={5}
               accent={PILLAR_ACCENT.recurring}
               onChange={(v) => setLevers({ repeatPct: v })}
+              helpKey="sliderRepeat"
             />
             <LabeledSlider
               label={t('kpi.referralRate')}
@@ -163,6 +169,7 @@ export function ScenarioSimulator() {
               step={5}
               accent={PILLAR_ACCENT.recurring}
               onChange={(v) => setLevers({ referralPct: v })}
+              helpKey="sliderReferral"
             />
           </div>
 
@@ -172,7 +179,7 @@ export function ScenarioSimulator() {
               key={Math.round(deltaGp)}
               className="animate-popdelta rounded-2xl bg-gradient-to-br from-indigo-50 to-white p-5 ring-1 ring-indigo-100"
             >
-              <div className="text-xs font-medium uppercase tracking-wide text-slate-500">Δ GP</div>
+              <div className="text-xs font-medium uppercase tracking-wide text-slate-500"><span className="inline-flex items-center gap-1">Δ GP<HelpTip k="deltaGp" align="left" /></span></div>
               <div
                 className="mt-1 text-4xl font-bold tabular-nums sm:text-5xl"
                 style={{ color: deltaGp > 0 ? '#059669' : deltaGp < 0 ? '#dc2626' : '#475569' }}
@@ -192,17 +199,20 @@ export function ScenarioSimulator() {
                 label={t('simulator.rewardBudget')}
                 value={formatRM(rewardBudget, lang)}
                 accentColor={PILLAR_ACCENT.recurring}
+                helpKey="rewardBudget"
               />
               <KPICard
                 label={t('simulator.topLever')}
                 value={leverName(topLever.lever)}
                 sub={formatDeltaRM(topLever.deltaGp, lang)}
+                helpKey="topLever"
               />
-              <KPICard label={t('simulator.requiredLeads')} value={formatNumber(leadsNeeded, lang)} accentColor={PILLAR_ACCENT.traffic} />
+              <KPICard label={t('simulator.requiredLeads')} value={formatNumber(leadsNeeded, lang)} accentColor={PILLAR_ACCENT.traffic} helpKey="leadsNeeded" />
               <KPICard
                 label={t('simulator.requiredCloses')}
                 value={formatNumber(closesNeeded, lang)}
                 accentColor={PILLAR_ACCENT.conversion}
+                helpKey="closesNeeded"
               />
             </div>
           </div>
