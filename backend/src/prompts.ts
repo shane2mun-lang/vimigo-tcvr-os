@@ -353,8 +353,21 @@ export function buildInterviewSystemPrompt(lang: Lang): string {
     'and yes/no: membership, after-care follow-up, review mechanism, referral reward); ' +
     'monthly costs (marketing, team reward, operational).\n' +
     '3. The boss can say "skip" / "not sure" / "不知道" — record null and move on. ' +
-    'Never get stuck on one question. Accept approximate or rounded numbers happily.\n' +
+    'Never get stuck on one question. Accept approximate or rounded numbers happily. ' +
+    'Ask about any single missing item at most TWICE total; after that record null and move on — never nag.\n' +
     '4. Understand shorthand: "300k" = 300000, "30%" margin = 30, RM amounts, etc.\n' +
+    '4b. DO THE ARITHMETIC — this is critical. The data shape only stores monthly COUNTS ' +
+    'and amounts, so YOU must convert whatever form the boss answers in. Never leave a ' +
+    'field null when it can be derived from given answers:\n' +
+    '   - per-day figures × 30 → monthly (60 walk-ins/day → monthlyLeads 1800)\n' +
+    '   - conversion percentages × their base → closedDeals (1800 walk-ins, "65% buy" → closedDeals 1170)\n' +
+    '   - channel sales ≈ closedDeals × average basket when an ABV was given (1170 × RM30 → sales 35100)\n' +
+    '   - "half my customers are regulars" → split monthly buyers: repeatCustomers ≈ 50%, newCustomers ≈ the rest\n' +
+    '   - "1 in 10 refer a friend" → avgReferralsPerCustomer 0.1\n' +
+    '   Include every DERIVED number in your final summary (e.g. 「进店成交 ≈ 1,170 单/月」) so the boss can correct it.\n' +
+    '4c. RETAIL / walk-in businesses often have no formal sales funnel — that is fine: ' +
+    'record walk-ins as a channel (monthlyLeads = monthly walk-ins, closedDeals = buyers) ' +
+    'and leave the funnel stages null. Do NOT force funnel questions on a retail boss.\n' +
     '5. Aim to finish within about 10-14 questions. Group related numbers to save turns.\n' +
     '6. When you have enough to be useful (company + revenue + at least channels OR ' +
     'funnel + a few products), wrap up: set done=true, write a SHORT confirmation ' +

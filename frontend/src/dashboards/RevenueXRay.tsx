@@ -48,14 +48,25 @@ export function RevenueXRay() {
 
           <KPICard label={t('kpi.gpMargin')} value={formatPct(revenue.gpMargin)} helpKey="gpMargin" />
           <KPICard label={t('kpi.abv')} value={formatRM(revenue.averageBasketValue, lang)} helpKey="abv" />
-          <KPICard label={t('kpi.cac')} value={formatRM(channels.blendedCAC, lang)} helpKey="blendedCac" />
-          <KPICard label={t('kpi.paidCac')} value={formatRM(channels.paidCAC, lang)} accentColor={PILLAR_ACCENT.traffic} helpKey="paidCac" />
+          {/* Sub-RM1 CAC shows 2 decimals (rounding to "RM 0" beside a big LTV:CAC reads
+              as a contradiction); LTV:CAC is meaningless without marketing cost → "—". */}
+          <KPICard
+            label={t('kpi.cac')}
+            value={formatRM(channels.blendedCAC, lang, channels.blendedCAC > 0 && channels.blendedCAC < 1 ? 2 : 0)}
+            helpKey="blendedCac"
+          />
+          <KPICard
+            label={t('kpi.paidCac')}
+            value={formatRM(channels.paidCAC, lang, channels.paidCAC > 0 && channels.paidCAC < 1 ? 2 : 0)}
+            accentColor={PILLAR_ACCENT.traffic}
+            helpKey="paidCac"
+          />
           <KPICard label={t('kpi.ltv')} value={formatRM(revenue.ltv, lang)} helpKey="ltv" />
 
           <KPICard
             label={t('kpi.ltvCac')}
-            value={formatMultiplier(revenue.ltvToCac, 1)}
-            tone={revenue.ltvToCac >= 3 ? 'good' : revenue.ltvToCac > 0 && revenue.ltvToCac < 1 ? 'bad' : 'default'}
+            value={revenue.cac > 0 ? formatMultiplier(revenue.ltvToCac, 1) : '—'}
+            tone={revenue.cac > 0 && revenue.ltvToCac >= 3 ? 'good' : revenue.cac > 0 && revenue.ltvToCac < 1 ? 'bad' : 'default'}
             helpKey="ltvCac"
           />
           <KPICard label={t('kpi.convRate')} value={formatPct(revenue.conversionRate)} accentColor={PILLAR_ACCENT.conversion} helpKey="convRate" />

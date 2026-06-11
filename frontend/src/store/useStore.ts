@@ -93,10 +93,13 @@ export interface StoreState extends TCVRInput {
 export const useStore = create<StoreState>()(
   persist(
     (set, get) => ({
-      ...sampleInput,
+      // First-time visitors start EMPTY — never with sample data, so a student who
+      // registers and skips the AI interview is not silently presenting (and syncing)
+      // Acme demo numbers as their own. Sample stays available via loadSample().
+      ...emptyInput(),
       lang: 'zh',
       levers: { ...ZERO_LEVERS },
-      activeProfileName: sampleInput.profile.name,
+      activeProfileName: undefined,
       ai: freshAI(),
       student: null,
       notionPageId: null,

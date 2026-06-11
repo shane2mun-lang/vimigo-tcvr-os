@@ -49,8 +49,13 @@ export function ScenarioSimulator() {
   const rewardBudget = (Math.max(0, deltaGp) * rewardSharePct) / 100
   const leadsNeeded = revenue.traffic * (1 + trafficPct / 100)
   // Closes scale with BOTH levers: more leads (traffic) and a better close rate
-  // (conversion) each increase the deals the team must actually close.
-  const closesNeeded = revenue.newCustomers * (1 + trafficPct / 100) * (1 + conversionPct / 100)
+  // (conversion). Mirror the engine's cap — close rate can never exceed 100% — so
+  // this KPI never implies impossible closes.
+  const convMult =
+    revenue.conversionRate > 0
+      ? Math.min(revenue.conversionRate * (1 + conversionPct / 100), 1) / revenue.conversionRate
+      : 1 + conversionPct / 100
+  const closesNeeded = revenue.newCustomers * (1 + trafficPct / 100) * convMult
 
   const topLever = scenarios.topLever
   const leverName = (k: LeverKey): string => {

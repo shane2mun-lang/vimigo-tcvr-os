@@ -11,12 +11,13 @@ import { useInput } from '@/store/selectors'
 import { useT } from '@/i18n/useT'
 import { Button, Card } from '@/components/ui'
 import { DEMO_NAME } from '@/store/demo'
+import { sampleInput } from '@/store/sample'
 
 async function postSubmit(snapshot: boolean): Promise<boolean> {
   const s = useStore.getState()
   if (!s.student) return false
-  // Never push demo-account data into the analysis database.
-  if (s.activeProfileName === DEMO_NAME) return false
+  // Never push demo/sample data into the analysis database.
+  if (s.activeProfileName === DEMO_NAME || s.activeProfileName === sampleInput.profile.name) return false
   try {
     const res = await fetch('/api/submit', {
       method: 'POST',

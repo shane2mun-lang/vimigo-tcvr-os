@@ -215,7 +215,7 @@ export const strings = {
   'kpi.cac': { zh: '综合获客成本', en: 'Blended CAC' },
   'kpi.paidCac': { zh: '付费获客成本', en: 'Paid CAC' },
   'kpi.abv': { zh: '平均客单 ABV', en: 'Avg basket (ABV)' },
-  'kpi.ltv': { zh: '客户终身价值 LTV', en: 'LTV' },
+  'kpi.ltv': { zh: '客户终身毛利 LTV', en: 'LTV (lifetime GP)' },
   'kpi.ltvCac': { zh: 'LTV : CAC', en: 'LTV : CAC' },
   'kpi.convRate': { zh: '转化率', en: 'Conversion rate' },
   'kpi.repeatRate': { zh: '复购率', en: 'Repeat rate' },
@@ -315,6 +315,11 @@ export const strings = {
     en: '✓ All filled in! Scroll down to review each section — fine-tune any number directly.',
   },
   'agent.restart': { zh: '重新开始', en: 'Restart' },
+  'agent.retry': { zh: '重试', en: 'Retry' },
+  'agent.connError': {
+    zh: '刚才那一步没成功（连接不稳定）— 点「重试」继续，不会丢失进度。',
+    en: 'That step didn’t go through (connection hiccup) — press Retry to continue; nothing is lost.',
+  },
   'agent.orManual': { zh: '或者直接往下滚动，自己填写每一区。', en: 'Or just scroll down and fill each section yourself.' },
 
   // ── Welcome registration ─────────────────────────────────────────────────────

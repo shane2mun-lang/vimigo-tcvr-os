@@ -138,6 +138,8 @@ export function InterviewAgent() {
   const [doneData, setDoneData] = useState<InterviewData | null>(null)
   const [applied, setApplied] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Keeps the last attempted history so a failed turn can be retried in place.
+  const lastAttempt = useRef<ChatTurn[] | null>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -146,12 +148,15 @@ export function InterviewAgent() {
   const callTurn = async (nextHistory: ChatTurn[]) => {
     setLoading(true)
     setUnavailable(null)
+    lastAttempt.current = nextHistory
     const res = await ai.interview(lang, nextHistory)
     setLoading(false)
     if (!res.ok) {
-      setUnavailable(res.message ?? res.reason)
+      // Never surface raw backend/parse errors to the student — friendly + retryable.
+      setUnavailable(res.reason === 'no_key' || res.reason === 'offline' ? 'unavailable' : 'retryable')
       return
     }
+    lastAttempt.current = null
     const reply = res.data.reply
     setHistory([...nextHistory, { role: 'assistant', content: JSON.stringify({ reply, done: res.data.done, data: res.data.done ? res.data.data : null }) }])
     setShown((s) => [...s, { role: 'assistant', content: reply }])
@@ -256,8 +261,13 @@ export function InterviewAgent() {
               </div>
             )}
             {unavailable && (
-              <div className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 ring-1 ring-amber-200">
-                {t('ai.unavailable')} <span className="opacity-60">({unavailable})</span>
+              <div className="flex items-center justify-between gap-2 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 ring-1 ring-amber-200">
+                <span>{unavailable === 'unavailable' ? t('ai.unavailable') : t('agent.connError')}</span>
+                {lastAttempt.current && (
+                  <Button size="sm" variant="outline" onClick={() => lastAttempt.current && void callTurn(lastAttempt.current)}>
+                    ↻ {t('agent.retry')}
+                  </Button>
+                )}
               </div>
             )}
           </div>

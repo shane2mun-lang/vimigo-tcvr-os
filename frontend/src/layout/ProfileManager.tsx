@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStore } from '@/store/useStore'
 import { useT } from '@/i18n/useT'
 import { Button } from '@/components/ui'
@@ -16,6 +16,26 @@ export function ProfileManager() {
   const [open, setOpen] = useState(false)
   const [profiles, setProfiles] = useState<SavedProfile[]>([])
   const fileRef = useRef<HTMLInputElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  // Close on outside click / Escape. (A fixed-position backdrop can't work here:
+  // the header's backdrop-blur makes it the containing block for fixed children,
+  // so an inset-0 backdrop would only cover the header strip.)
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
   const activeName = useStore((s) => s.activeProfileName)
   const getInput = useStore((s) => s.getInput)
@@ -51,7 +71,7 @@ export function ProfileManager() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={rootRef}>
       <Button variant="outline" size="sm" onClick={toggle}>
         <span className="max-w-[120px] truncate">{activeName ?? t('profile.manage')}</span>
         <span className="text-xs">▾</span>
@@ -59,7 +79,6 @@ export function ProfileManager() {
 
       {open && (
         <>
-          <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
           <div className="absolute right-0 z-40 mt-2 w-64 card p-2 text-sm">
             <button className="menu-item" onClick={() => { clearAll(); setOpen(false) }}>
               ＋ {t('profile.new')}
